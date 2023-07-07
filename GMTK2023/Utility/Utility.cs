@@ -11,6 +11,18 @@
         Left = 3,
     }
 
+    enum EightDirection
+    {
+        UpLeft = 0,
+        Up,
+        UpRight,
+        Left,
+        Right,
+        DownLeft,
+        Down,
+        DownRight
+    }
+
 
 
 
@@ -60,6 +72,71 @@
             throw new NotImplementedException();
         }
 
+
+        public static EightDirection GetDirectionFromAngle(float angle)
+        {
+            angle = MonoMath.MainBranchRadian(angle);
+
+            if(angle < (1.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.Right;
+            }
+            else if (angle < (2.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.UpRight;
+            }
+            else if (angle < (3.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.Up;
+            }
+            else if (angle < (4.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.UpLeft;
+            }
+            else if (angle < (5.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.Left;
+            }
+            else if (angle < (6.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.DownLeft;
+            }
+            else if (angle < (7.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.Down;
+            }
+            else if (angle < (8.0f * MathF.PI / 4.0f) - MathF.PI / 8.0f)
+            {
+                return EightDirection.DownRight;
+            }
+
+            return EightDirection.Right;
+        }
+
+        public static float GetAngleFromDirection(EightDirection dir)
+        {
+            switch (dir)
+            {
+                case EightDirection.UpLeft:
+                    return MathF.PI * 0.75f;
+                case EightDirection.Up:
+                    return MathF.PI / 2.0f;
+                case EightDirection.UpRight:
+                    return MathF.PI / 4.0f;
+                case EightDirection.Left:
+                    return MathF.PI;
+                case EightDirection.Right:
+                    return 0.0f;
+                case EightDirection.DownLeft:
+                    return MathF.PI * 1.25f;
+                case EightDirection.Down:
+                    return MathF.PI * 1.5f;
+                case EightDirection.DownRight:
+                    return MathF.PI * 1.75f;
+            }
+
+            throw new NotImplementedException();
+        }
 
 
         /// <summary>

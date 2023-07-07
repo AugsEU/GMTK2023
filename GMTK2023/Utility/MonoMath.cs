@@ -88,6 +88,20 @@ namespace GMTK2023
             return angle % (MathF.PI * 2.0f);
         }
 
+        public static float GetAngleDiff(float angle1, float angle2)
+        {
+            angle1 = MainBranchRadian(angle1);
+            angle2 = MainBranchRadian(angle2);
+
+            float diff = MathF.Abs(angle1 - angle2);
+
+            if(diff > MathF.PI)
+            {
+                diff -= MathF.PI * 2.0f;
+            }
+
+            return diff;
+        }
 
 
         /// <summary>
@@ -150,6 +164,12 @@ namespace GMTK2023
             return new Vector2(MathF.Round(v.X), MathF.Round(v.Y));
         }
 
+        public static Vector2 GetVectorFromAngle(float angle)
+        {
+            Vector2 retVec = new Vector2(1.0f, 0.0f);
+            retVec = Rotate(retVec, angle);
+            return retVec;
+        }
 
         /// <summary>
         /// Counts the number of bits which are set
