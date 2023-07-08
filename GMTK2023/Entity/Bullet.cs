@@ -88,6 +88,7 @@
 
         public override void OnCollideEntity(Entity entity)
         {
+            bool hit = false;
             if (entity is AIEntity)
             {
                 AIEntity aiEntity = (AIEntity)entity;
@@ -95,17 +96,26 @@
                 if(aiEntity.GetTeam() == AITeam.Ally && mTeam == AITeam.Enemy)
                 {
                     aiEntity.SetTeam(AITeam.Enemy);
+                    hit = true;
                 }
                 else if(aiEntity.GetTeam() == AITeam.Enemy && mTeam == AITeam.Ally)
                 {
                     aiEntity.Kill();
+                    hit = true;
                 }
             }
             else if(entity is Player)
             {
                 Player player = (Player)entity;
 
-                player.AddHealth(1);
+                player.AddHealth(-1);
+                hit = true;
+            }
+
+            if(hit == true)
+            {
+                SetEnabled(false);
+                EntityManager.I.QueueDeleteEntity(this);
             }
 
             base.OnCollideEntity(entity);

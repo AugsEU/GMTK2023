@@ -13,7 +13,7 @@
         const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 15.0f;
         const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.85f;
 
-        const int MAX_HEALTH = 7;
+        public const int MAX_HEALTH = 7;
 
         #endregion rConstants
 
@@ -319,6 +319,11 @@
             {
                 Kill();
             }
+        }
+
+        public int GetHealth()
+        {
+            return mHealth;
         }
 
         #endregion rUtility
