@@ -11,6 +11,21 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Content\Player\**" />
+    <EmbeddedResource Remove="Content\Player\**" />
+    <None Remove="Content\Player\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\bin\DesktopGL\Player\PlayerBoostLeft.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerBoostRight.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerDown.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerDownLeft.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerDownRight.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerLeft.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerRight.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerUp.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerUpLeft.xnb" />
+    <None Remove="Content\bin\DesktopGL\Player\PlayerUpRight.xnb" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>
@@ -21,6 +36,9 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\bin\DesktopGL\Player\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
