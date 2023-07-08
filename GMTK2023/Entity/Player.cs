@@ -17,13 +17,13 @@
         public override void LoadContent()
         {
             mDirectionTextures = new Animator[8];
-            mDirectionTextures[(int)EightDirection.Up]          = MonoData.I.LoadAnimator("Player/PlayerUp");
+            mDirectionTextures[(int)EightDirection.Up]          = MonoData.I.LoadAnimator("Player/bike_up_temp");
             mDirectionTextures[(int)EightDirection.UpLeft]      = MonoData.I.LoadAnimator("Player/PlayerUpLeft");
-            mDirectionTextures[(int)EightDirection.Left]        = MonoData.I.LoadAnimator("Player/PlayerLeft");
+            mDirectionTextures[(int)EightDirection.Left]        = MonoData.I.LoadAnimator("Player/player_side_left");
             mDirectionTextures[(int)EightDirection.DownLeft]    = MonoData.I.LoadAnimator("Player/PlayerDownLeft");
-            mDirectionTextures[(int)EightDirection.Down]        = MonoData.I.LoadAnimator("Player/PlayerDown");
+            mDirectionTextures[(int)EightDirection.Down]        = MonoData.I.LoadAnimator("Player/bike_down_temp");
             mDirectionTextures[(int)EightDirection.DownRight]   = MonoData.I.LoadAnimator("Player/PlayerDownRight");
-            mDirectionTextures[(int)EightDirection.Right]       = MonoData.I.LoadAnimator("Player/PlayerRight");
+            mDirectionTextures[(int)EightDirection.Right]       = MonoData.I.LoadAnimator("Player/player_side");
             mDirectionTextures[(int)EightDirection.UpRight]     = MonoData.I.LoadAnimator("Player/PlayerUpRight");
             mTexture = MonoData.I.MonoGameLoad<Texture2D>("Player/PlayerUp");
         }
