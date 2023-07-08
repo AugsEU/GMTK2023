@@ -10,7 +10,7 @@
         const float GRAPPLE_LOCK_DISTANCE = 25.0f;
         const float GRAPPLE_RADIAL_SPIN_SPEED = MAX_SPEED + 10.0f;
         const float GRAPPLE_RADIAL_SPIN_START_ANGLE = 0.9f;
-        const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 15.0f;
+        const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 25.0f;
         const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.85f;
 
         public const int MAX_HEALTH = 7;
@@ -93,7 +93,9 @@
                 SetCentrePos(calculatedPos);
                 ForceInBounds(GameScreen.PLAYABLE_AREA);
 
-                if(mTotalRadialAngleTravelled > GRAPPLE_ANGLE_TO_CHANGE_TEAM)
+                mGrappleDir = mGrappledEntity.GetCentrePos() - mCentreOfMass;
+
+                if (mTotalRadialAngleTravelled > GRAPPLE_ANGLE_TO_CHANGE_TEAM)
                 {
                     mGrappledEntity.SetTeam(AITeam.Ally);
                 }
@@ -208,10 +210,8 @@
             float dt = Util.GetDeltaT(gameTime);
             if (mGrappleInAction)
             {
-                MonoDebug.DLog("Update grap {0} ", mRadialAngleSpeed);
                 if (mGrappledEntity is null)
                 {
-                    MonoDebug.DLog("   Entity is null");
                     if (mGrappleLength >= GRAPPLE_MAX_LENGTH)
                     {
                         EndGrapple();
@@ -233,7 +233,6 @@
                 }
                 else if(mRadialAngleSpeed == 0.0f)
                 {
-                    MonoDebug.DLog("    Consider spin");
                     mGrappleDir = (mGrappledEntity.GetCentrePos() - GetCentrePos());
                     mGrappleLength = mGrappleDir.Length();
 
@@ -249,8 +248,6 @@
                         bool angleIsGood = MathF.Abs(angleDiff) > GRAPPLE_RADIAL_SPIN_START_ANGLE;
                         bool grappleIsBigEnough = mGrappleLength > GRAPPLE_RADIAL_SPIN_MIN_RADIUS;
                         bool grappleIsTooBig = mGrappleLength > GRAPPLE_MAX_LENGTH;
-
-                        MonoDebug.DLog("Bool checks: {0} {1} {2}", angleIsGood, grappleIsBigEnough, grappleIsTooBig);
 
                         if ((angleIsGood && grappleIsBigEnough) || grappleIsTooBig)
                         {

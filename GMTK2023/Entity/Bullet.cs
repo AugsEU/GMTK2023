@@ -89,33 +89,39 @@
         public override void OnCollideEntity(Entity entity)
         {
             bool hit = false;
-            if (entity is AIEntity)
-            {
-                AIEntity aiEntity = (AIEntity)entity;
 
-                if(aiEntity.GetTeam() == AITeam.Ally && mTeam == AITeam.Enemy)
+            float dist = (entity.GetCentrePos() - mCentreOfMass).Length();
+
+            if (dist < 12.0f)
+            {
+                if (entity is AIEntity)
                 {
-                    aiEntity.SetTeam(AITeam.Enemy);
+                    AIEntity aiEntity = (AIEntity)entity;
+
+                    if (aiEntity.GetTeam() == AITeam.Ally && mTeam == AITeam.Enemy)
+                    {
+                        aiEntity.SetTeam(AITeam.Enemy);
+                        hit = true;
+                    }
+                    else if (aiEntity.GetTeam() == AITeam.Enemy && mTeam == AITeam.Ally)
+                    {
+                        aiEntity.Kill();
+                        hit = true;
+                    }
+                }
+                else if (entity is Player && mTeam != AITeam.Ally)
+                {
+                    Player player = (Player)entity;
+
+                    player.AddHealth(-1);
                     hit = true;
                 }
-                else if(aiEntity.GetTeam() == AITeam.Enemy && mTeam == AITeam.Ally)
+
+                if (hit == true)
                 {
-                    aiEntity.Kill();
-                    hit = true;
+                    SetEnabled(false);
+                    EntityManager.I.QueueDeleteEntity(this);
                 }
-            }
-            else if(entity is Player && mTeam != AITeam.Ally)
-            {
-                Player player = (Player)entity;
-
-                player.AddHealth(-1);
-                hit = true;
-            }
-
-            if(hit == true)
-            {
-                SetEnabled(false);
-                EntityManager.I.QueueDeleteEntity(this);
             }
 
             base.OnCollideEntity(entity);
