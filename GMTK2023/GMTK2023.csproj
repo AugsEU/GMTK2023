@@ -26,6 +26,13 @@
     <None Remove="Content\bin\DesktopGL\Player\PlayerUp.xnb" />
     <None Remove="Content\bin\DesktopGL\Player\PlayerUpLeft.xnb" />
     <None Remove="Content\bin\DesktopGL\Player\PlayerUpRight.xnb" />
+    <None Remove="Content\Enemies\EnemyOneDown.png" />
+    <None Remove="Content\Enemies\EnemyOneDownLeft.png" />
+    <None Remove="Content\Enemies\EnemyOneDownRight.png" />
+    <None Remove="Content\Enemies\EnemyOneLeft.pdn" />
+    <None Remove="Content\Enemies\EnemyOneLeft.png" />
+    <None Remove="Content\Enemies\EnemyOneRight.png" />
+    <None Remove="Content\Enemies\EnemyOneUp.png" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>
