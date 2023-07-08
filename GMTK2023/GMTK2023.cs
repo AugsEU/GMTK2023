@@ -235,7 +235,7 @@ namespace GMTK2023
             {
                 RenderTarget2D screenTargetRef = screen.DrawToRenderTarget(frameInfo);
                 Rectangle screenRect = GraphicsDevice.PresentationParameters.Bounds;
-                mRenderTargetRect = screenRect;
+                
                 Camera screenCam = CameraManager.I.GetCamera(CameraManager.CameraInstance.GlobalCamera);
 
                 GraphicsDevice.SetRenderTarget(null);
@@ -270,6 +270,8 @@ namespace GMTK2023
             int finalHeight = screen.Height * multiplier;
 
             Rectangle destRect = new Rectangle((screenRect.Width - finalWidth) / 2, (screenRect.Height - finalHeight) / 2, finalWidth, finalHeight);
+
+            mRenderTargetRect = destRect;
 
             MonoDraw.DrawTexture(info, screen, destRect);
         }

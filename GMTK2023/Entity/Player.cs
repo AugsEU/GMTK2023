@@ -5,7 +5,8 @@
         #region rConstants
 
         const float GRAPPLE_EXTEND_SPEED = 70.0f;
-        const float GRAPPLE_MAX_LENGTH = 180.0f;
+        const float GRAPPLE_MAX_LENGTH = 120.0f;
+        const float GRAPPLE_CHANGE_SPEED = 0.4f;
 
         #endregion rConstants
 
@@ -119,7 +120,9 @@
 
         void HandleMouse(GameTime gameTime)
         {
-            if(InputManager.I.KeyPressed(GameKeys.FireGun))
+            float dt = Util.GetDeltaT(gameTime);
+
+            if (InputManager.I.KeyPressed(GameKeys.FireGun))
             {
                 BeginGrapple();
             }
@@ -127,6 +130,20 @@
             if(!InputManager.I.KeyHeld(GameKeys.FireGun))
             {
                 EndGrapple();
+            }
+
+            if(mGrappleInAction && mGrappledEntity is null)
+            {
+                Vector2 newGrappleDir = (InputManager.I.GetMouseWorldPos() - GetCentrePos());
+                float newAngle = MathF.Atan2(newGrappleDir.Y, newGrappleDir.X);
+                float currAngle = MathF.Atan2(mGrappleDir.Y, mGrappleDir.X);
+
+                float angleDiff = MonoMath.GetAngleDiff(newAngle, currAngle);
+                float maxAngleChange = GRAPPLE_CHANGE_SPEED * dt;
+
+                angleDiff = Math.Clamp(angleDiff, -maxAngleChange, maxAngleChange);
+
+                mGrappleDir = MonoMath.Rotate(mGrappleDir, angleDiff);
             }
         }
 
