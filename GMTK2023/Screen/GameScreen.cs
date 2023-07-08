@@ -30,7 +30,7 @@
             mPlayer = new Player(new Vector2(100.0f, 100.0f), 0.0f);
             EntityManager.I.RegisterEntity(mPlayer);
             EntityManager.I.RegisterEntity(new AIEntity(new Vector2(500.0f, 200.0f), MathF.PI));
-            EntityManager.I.RegisterEntity(new AIEntity(new Vector2(500.0f, 200.0f), MathF.PI));
+            //EntityManager.I.RegisterEntity(new AIEntity(new Vector2(500.0f, 200.0f), MathF.PI));
             base.OnActivate();
         }
 

@@ -2,16 +2,55 @@
 {
     internal class Bullet : Entity
     {
-        const float BULLET_SPEED = 60.0f;
+        const float BULLET_SPEED = 30.0f;
 
         AITeam mTeam;
         Vector2 mVelocity;
 
-        public Bullet(Vector2 pos, EightDirection dir, AITeam mTeam) : base(pos)
+        public Bullet(Vector2 pos, EightDirection dir, AITeam team) : base(pos)
         {
             float angle = Util.GetAngleFromDirection(dir);
             mVelocity = new Vector2(BULLET_SPEED, 0.0f);
-            mVelocity = MonoMath.Rotate(mVelocity, angle);
+            mVelocity = MonoMath.Rotate(mVelocity, -angle);
+            mTeam = team;
+
+            switch (dir)
+            {
+                case EightDirection.UpLeft:
+                    mPosition.X += 4.0f;
+                    mPosition.Y += 2.0f;
+                    break;
+                case EightDirection.Up:
+                    mPosition.X += 20.0f;
+                    mPosition.Y -= 8.0f;
+                    break;
+                case EightDirection.UpRight:
+                    mPosition.X += 32.0f;
+                    mPosition.Y += 3.0f;
+                    break;
+                case EightDirection.Left:
+                    mPosition.X -= 8.0f;
+                    mPosition.Y += 11.0f;
+                    break;
+                case EightDirection.Right:
+                    mPosition.X += 32.0f;
+                    mPosition.Y += 11.0f;
+                    break;
+                case EightDirection.DownLeft:
+                    mPosition.X -= 8.0f;
+                    mPosition.Y += 11.0f;
+                    break;
+                case EightDirection.Down:
+                    mPosition.X += 4.0f;
+                    mPosition.Y += 32.0f;
+                    break;
+                case EightDirection.DownRight:
+                    mPosition.X += 29.0f;
+                    mPosition.Y += 11.0f;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public override void LoadContent()

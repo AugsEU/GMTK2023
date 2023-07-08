@@ -3,12 +3,12 @@
     internal class Player : Motorbike
     {
         #region rConstants
-
+        protected const float MAX_SPEED = 30.0f;
         const float GRAPPLE_EXTEND_SPEED = 70.0f;
         const float GRAPPLE_MAX_LENGTH = 120.0f;
         const float GRAPPLE_CHANGE_SPEED = 0.4f;
         const float GRAPPLE_LOCK_DISTANCE = 25.0f;
-        const float GRAPPLE_RADIAL_SPIN_SPEED = Motorbike.MAX_SPEED + 10.0f;
+        const float GRAPPLE_RADIAL_SPIN_SPEED = MAX_SPEED + 10.0f;
         const float GRAPPLE_RADIAL_SPIN_START_ANGLE = 0.9f;
         const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 15.0f;
         const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.85f;
@@ -39,7 +39,7 @@
 
         #region rInit
 
-        public Player(Vector2 pos, float angle) : base(pos, angle)
+        public Player(Vector2 pos, float angle) : base(pos, angle, MAX_SPEED)
         {
             mGrappledEntity = null;
             mGrappleInAction = false;

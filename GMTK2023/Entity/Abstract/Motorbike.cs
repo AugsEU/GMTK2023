@@ -4,7 +4,6 @@ namespace GMTK2023
 {
     abstract class Motorbike : EightWayMover
     {
-        protected const float MAX_SPEED = 30.0f;
         const float TURN_SPEED = 0.8f;
         const float FRICTION = 8.0f;
         const float ACELERATE = 1.0f;
@@ -12,10 +11,12 @@ namespace GMTK2023
         const float BOOST_SPEED = 10.0f;
 
         bool mAccelerating;
+        float mMaxSpeed;
 
-        protected Motorbike(Vector2 pos, float angle) : base(pos, angle, TURN_SPEED)
+        protected Motorbike(Vector2 pos, float angle, float maxSpeed) : base(pos, angle, TURN_SPEED)
         {
             mAccelerating = false;
+            mMaxSpeed = maxSpeed;
         }
 
         protected void SetAcelerate(bool acel)
@@ -29,7 +30,7 @@ namespace GMTK2023
 
             if(mAccelerating)
             {
-                mSpeed = Math.Clamp(mSpeed, MIN_SPEED, MAX_SPEED);
+                mSpeed = Math.Clamp(mSpeed, MIN_SPEED, mMaxSpeed);
                 mSpeed += dt * ACELERATE;
             }
             else
@@ -41,7 +42,7 @@ namespace GMTK2023
                 }
             }
 
-            mSpeed = Math.Clamp(mSpeed, 0.0f, MAX_SPEED);
+            mSpeed = Math.Clamp(mSpeed, 0.0f, mMaxSpeed);
 
             base.Update(gameTime);
         }

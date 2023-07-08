@@ -14,6 +14,7 @@
     {
         #region rConstants
 
+        const float MAX_SPEED = 20.0f;
         const float TARGET_REACHED_DIST = 40.0f;
         const double MIN_DIRECTION_CHANGE_TIME = 300.0;
 
@@ -33,12 +34,15 @@
         EightDirection mPrevDirection;
         PercentageTimer mDirChangeTimer;
 
+        MonoTimer mShootBulletTimer;
+        float mShootDuration;
+
         #endregion rMembers
 
 
         #region rInit
 
-        public AIEntity(Vector2 pos, float angle) : base(pos, angle)
+        public AIEntity(Vector2 pos, float angle) : base(pos, angle, MAX_SPEED)
         {
             mCurrentTarget = Vector2.Zero;
             mStopped = false;
@@ -48,6 +52,10 @@
             mPrevDirection = GetCurrentDir();
             mDirChangeTimer = new PercentageTimer(MIN_DIRECTION_CHANGE_TIME);
             mDirChangeTimer.Start();
+
+            mShootBulletTimer = new MonoTimer();
+            mShootBulletTimer.Start();
+            mShootDuration = RandomManager.I.GetWorld().GetFloatRange(3500.0f, 12000.0f);
         }
 
         public override void LoadContent()
@@ -98,6 +106,13 @@
             GoToTarget(gameTime);
             SetAcelerate(!mStopped);
 
+            if(mShootBulletTimer.GetElapsedMs() > mShootDuration)
+            {
+                ShootBullet();
+                mShootBulletTimer.Reset();
+                mShootDuration = RandomManager.I.GetWorld().GetFloatRange(1500.0f, 5000.0f);
+            }
+
             base.Update(gameTime);
         }
 
@@ -141,6 +156,12 @@
                 mStopDuration = 0.0f;
                 mStopTimer.Reset();
             }
+        }
+
+
+        void ShootBullet()
+        {
+            EntityManager.I.QueueRegisterEntity(new Bullet(mPosition, GetCurrentDir(), GetTeam()));
         }
 
         #endregion rUpdate
