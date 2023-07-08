@@ -29,6 +29,7 @@ namespace GMTK2023
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D mDummyTexture;
+        Rectangle mRenderTargetRect = new Rectangle(0, 0, 1, 1);
 
         #endregion rMembers
 
@@ -43,6 +44,7 @@ namespace GMTK2023
         /// </summary>
         public GMTK2023()
         {
+            sInstance = this;
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -92,7 +94,7 @@ namespace GMTK2023
             CameraManager.I.Init();
 
             ScreenManager.I.LoadAllScreens(_graphics);
-            ScreenManager.I.ActivateScreen(ScreenType.Title);
+            ScreenManager.I.ActivateScreen(ScreenType.Game);
         }
 
         #endregion rInit
@@ -233,6 +235,7 @@ namespace GMTK2023
             {
                 RenderTarget2D screenTargetRef = screen.DrawToRenderTarget(frameInfo);
                 Rectangle screenRect = GraphicsDevice.PresentationParameters.Bounds;
+                
                 Camera screenCam = CameraManager.I.GetCamera(CameraManager.CameraInstance.GlobalCamera);
 
                 GraphicsDevice.SetRenderTarget(null);
@@ -267,6 +270,8 @@ namespace GMTK2023
             int finalHeight = screen.Height * multiplier;
 
             Rectangle destRect = new Rectangle((screenRect.Width - finalWidth) / 2, (screenRect.Height - finalHeight) / 2, finalWidth, finalHeight);
+
+            mRenderTargetRect = destRect;
 
             MonoDraw.DrawTexture(info, screen, destRect);
         }
@@ -318,6 +323,12 @@ namespace GMTK2023
         public static Texture2D GetDummyTexture()
         {
             return sInstance.mDummyTexture;
+        }
+
+
+        public static Rectangle GetRenderTargetRect()
+        {
+            return sInstance.mRenderTargetRect;
         }
 
         #endregion rDraw

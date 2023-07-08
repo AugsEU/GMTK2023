@@ -18,9 +18,7 @@
         SubEntity,
         Default,
         Player,
-        Tile,
-        TileEffects,
-        Bubble,
+        Text,
         Front,
         NumLayers
     }
@@ -140,7 +138,7 @@
         /// <summary>
         /// Draw a string centred at a position
         /// </summary>
-        public static void DrawStringCentred(DrawInfo info, SpriteFont font, Vector2 position, Color color, string text, DrawLayer depth = DrawLayer.Bubble)
+        public static void DrawStringCentred(DrawInfo info, SpriteFont font, Vector2 position, Color color, string text, DrawLayer depth = DrawLayer.Text)
         {
             Vector2 size = font.MeasureString(text);
 
@@ -150,7 +148,7 @@
         /// <summary>
         /// Draw a string at position(top left)
         /// </summary>
-        public static void DrawString(DrawInfo info, SpriteFont font, Vector2 position, Color color, string text, DrawLayer depth = DrawLayer.Bubble)
+        public static void DrawString(DrawInfo info, SpriteFont font, Vector2 position, Color color, string text, DrawLayer depth = DrawLayer.Text)
         {
             info.spriteBatch.DrawString(font, text, position, color, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, GetDepth(depth));
         }

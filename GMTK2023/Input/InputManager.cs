@@ -1,5 +1,7 @@
 ﻿namespace GMTK2023
 {
+    using Microsoft.Xna.Framework.Input;
+    using Microsoft.Xna.Framework;
     using InputBindingMap = Dictionary<GameKeys, InputBindSet>;
     using InputBindingPair = KeyValuePair<GameKeys, InputBindSet>;
 
@@ -24,6 +26,7 @@
     {
         #region rMembers
 
+        MouseState mMouseState;
         InputBindingMap mInputBindings = new InputBindingMap();
 
         #endregion rMembers
@@ -79,6 +82,8 @@
             {
                 keyBindPair.Value.Update(gameTime);
             }
+
+            mMouseState = Mouse.GetState();
         }
 
 
@@ -104,6 +109,29 @@
         {
             return mInputBindings[key].AnyKeyHeld();
         }
+
+        public Point GetMousePos()
+        {
+            Point screenPoint;
+
+            Rectangle screenRect = GMTK2023.GetRenderTargetRect();
+            screenPoint.X = (mMouseState.Position.X - screenRect.Location.X);
+            screenPoint.Y = (mMouseState.Position.Y - screenRect.Location.Y);
+
+            return screenPoint;
+        }
+
+        public Vector2 GetMouseWorldPos()
+        {
+            Point mousePos = GetMousePos();
+
+            Rectangle screenRect = GMTK2023.GetRenderTargetRect();
+            float scaleFactor = screenRect.Width / Screen.SCREEN_WIDTH;
+
+            return new Vector2(mousePos.X, mousePos.Y) / scaleFactor;
+        }
+
+
         #endregion rKeySense
     }
 }

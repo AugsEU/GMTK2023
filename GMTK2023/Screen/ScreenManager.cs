@@ -128,8 +128,8 @@ namespace GMTK2023
     {
         #region rConstants
 
-        const int SCREEN_WIDTH = 960;
-        const int SCREEN_HEIGHT = 505;
+        public const int SCREEN_WIDTH = 960;
+        public const int SCREEN_HEIGHT = 505;
 
         #endregion rConstants
 

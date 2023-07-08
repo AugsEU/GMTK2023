@@ -27,6 +27,7 @@
             mSpeed = 0.0f;
             mTargetAngle = angle;
             mTurnSpeed = turnSpeed;
+            mCurrentDirection = Util.GetDirectionFromAngle(mCurrentAngle);
         }
 
         #endregion rInit
@@ -53,10 +54,7 @@
             }
 
             mCurrentDirection = Util.GetDirectionFromAngle(mCurrentAngle);
-
-            Vector2 speedVec = mSpeed * dt * MonoMath.GetVectorFromAngle(-mCurrentAngle);
-
-            mPosition += mSpeed * dt * MonoMath.GetVectorFromAngle(-mCurrentAngle);
+            mPosition += GetVelocity() * dt;
 
             ForceInBounds(GameScreen.PLAYABLE_AREA);
 
@@ -87,6 +85,16 @@
         {
             mCurrentAngle = angle;
             mTargetAngle = angle;
+        }
+
+        protected EightDirection GetCurrentDir()
+        {
+            return mCurrentDirection;
+        }
+
+        protected Vector2 GetVelocity()
+        {
+            return MonoMath.GetVectorFromAngle(-mCurrentAngle) * mSpeed;
         }
 
         #endregion rUpdate
