@@ -61,6 +61,11 @@
             }
         }
 
+        public void RegisterPos(Vector2 position)
+        {
+            mCurrentTargets.Add(position);
+        }
+
         bool IsPointTooClose(Vector2 point, float radius)
         {
             foreach (Vector2 target in mCurrentTargets)

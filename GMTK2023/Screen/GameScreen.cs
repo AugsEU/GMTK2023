@@ -52,11 +52,35 @@
 
             EntityManager.I.ClearEntities();
             AITargetManager.I.Init();
-            mPlayer = new Player(new Vector2(100.0f, 100.0f), 0.0f);
-            EntityManager.I.RegisterEntity(mPlayer);
-            EntityManager.I.RegisterEntity(new AIEntity(new Vector2(500.0f, 200.0f), MathF.PI));
-            //EntityManager.I.RegisterEntity(new AIEntity(new Vector2(500.0f, 200.0f), MathF.PI));
+
+            SpawnInitialEntities();
             base.OnActivate();
+        }
+
+
+        void SpawnInitialEntities()
+        {
+            RandomManager.I.GetWorld().ChugNumber(DateTime.Now.Millisecond);
+
+            AITargetManager.I.Init();
+            Vector2 playerSpawn = new Vector2(100.0f, 100.0f);
+            mPlayer = new Player(playerSpawn, 0.0f);
+
+            EntityManager.I.RegisterEntity(mPlayer);
+            AITargetManager.I.RegisterPos(playerSpawn);
+
+            int numToSpawn = 10;
+
+            for(int i = 0; i < numToSpawn; i++)
+            {
+                Vector2 pos = AITargetManager.I.GiveMeATarget();
+                pos.X = (pos.X - SCREEN_WIDTH) / 2.0f + SCREEN_WIDTH;
+
+                AIEntity newEntity = new AIEntity(pos, MathF.PI);
+                EntityManager.I.RegisterEntity(newEntity);
+            }
+
+            AITargetManager.I.Init();
         }
 
         #endregion rInit
