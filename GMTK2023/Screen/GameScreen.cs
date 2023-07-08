@@ -5,9 +5,12 @@
     /// </summary>
     internal class GameScreen : Screen
     {
+        public static Rectangle PLAYABLE_AREA = new Rectangle(0, 88, 960, 417);
+
+
         Texture2D mBG;
 
-        Player testPlayer;
+        Player mPlayer;
 
         public GameScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
@@ -23,8 +26,11 @@
         public override void OnActivate()
         {
             EntityManager.I.ClearEntities();
-            testPlayer = new Player(new Vector2(100.0f, 100.0f), 0.0f);
-            EntityManager.I.RegisterEntity(testPlayer);
+            AITargetManager.I.Init();
+            mPlayer = new Player(new Vector2(100.0f, 100.0f), 0.0f);
+            EntityManager.I.RegisterEntity(mPlayer);
+            EntityManager.I.RegisterEntity(new AIEntity(new Vector2(500.0f, 200.0f), MathF.PI));
+            EntityManager.I.RegisterEntity(new AIEntity(new Vector2(500.0f, 200.0f), MathF.PI));
             base.OnActivate();
         }
 

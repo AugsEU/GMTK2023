@@ -151,6 +151,12 @@
             return GetFloatRange(0.0f, 100.0f) < percent;
         }
 
+
+        public Vector2 GetRandomPoint(Rectangle area)
+        {
+            return new Vector2(GetFloatRange(area.X, area.X + area.Width), GetFloatRange(area.Y, area.Y + area.Height));
+        }
+
         #endregion rAccessors
     }
 

@@ -58,7 +58,7 @@
 
             mPosition += mSpeed * dt * MonoMath.GetVectorFromAngle(-mCurrentAngle);
 
-            ForceInBounds(PLAYABLE_AREA);
+            ForceInBounds(GameScreen.PLAYABLE_AREA);
 
             foreach(Animator animator in mDirectionTextures)
             {

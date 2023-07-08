@@ -5,9 +5,6 @@
     /// </summary>
     abstract class Entity
     {
-        protected static Rectangle PLAYABLE_AREA = new Rectangle(0, 88, 960, 417);
-
-
         #region rMembers
 
         // Keep track for IDs. Might be problems if you spawn 2^64 entities in a single play session.
