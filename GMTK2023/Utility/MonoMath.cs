@@ -107,6 +107,14 @@ namespace GMTK2023
             return diff;
         }
 
+        public static float GetAngleDiff(Vector2 a, Vector2 b)
+        {
+            float aAngle = MathF.Atan2(a.Y, a.X);
+            float bAngle = MathF.Atan2(b.Y, b.X);
+
+            return GetAngleDiff(aAngle, bAngle);
+        }
+
 
         /// <summary>
         /// Clamp number between -absLimit and absLimit

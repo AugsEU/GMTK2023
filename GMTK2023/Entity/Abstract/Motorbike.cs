@@ -4,7 +4,7 @@ namespace GMTK2023
 {
     abstract class Motorbike : EightWayMover
     {
-        const float MAX_SPEED = 30.0f;
+        protected const float MAX_SPEED = 30.0f;
         const float TURN_SPEED = 0.8f;
         const float FRICTION = 8.0f;
         const float ACELERATE = 1.0f;

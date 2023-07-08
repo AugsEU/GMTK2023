@@ -8,6 +8,9 @@
         const float GRAPPLE_MAX_LENGTH = 120.0f;
         const float GRAPPLE_CHANGE_SPEED = 0.4f;
         const float GRAPPLE_LOCK_DISTANCE = 25.0f;
+        const float GRAPPLE_RADIAL_SPIN_SPEED = Motorbike.MAX_SPEED + 10.0f;
+        const float GRAPPLE_RADIAL_SPIN_START_ANGLE = 0.9f;
+        const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 15.0f;
 
         #endregion rConstants
 
@@ -20,8 +23,9 @@
         bool mGrappleInAction;
         float mGrappleLength;
         Vector2 mGrappleDir;
-
         AIEntity mGrappledEntity;
+        float mRadialAngleSpeed;
+        float mRadialAngle;
 
         #endregion rMembers
 
@@ -32,6 +36,8 @@
         {
             mGrappledEntity = null;
             mGrappleInAction = false;
+            mRadialAngleSpeed = 0.0f;
+            mRadialAngle = 0.0f;
         }
 
         public override void LoadContent()
@@ -55,12 +61,27 @@
 
         public override void Update(GameTime gameTime)
         {
+            float dt = Util.GetDeltaT(gameTime);
+
             HandleKeys(gameTime);
             HandleMouse(gameTime);
 
             UpdateGrapple(gameTime);
 
             base.Update(gameTime);
+
+            if(MathF.Abs(mRadialAngleSpeed) > 0.0f && mGrappledEntity is not null)
+            {
+                mRadialAngle += dt * mRadialAngleSpeed;
+                ForceAngle(-mRadialAngle - MathF.Sign(mRadialAngleSpeed) * MathF.PI / 2.0f);
+                mSpeed = GRAPPLE_RADIAL_SPIN_SPEED;
+                Vector2 calculatedPos = mGrappledEntity.GetCentrePos();
+                calculatedPos.X += mGrappleLength * MathF.Cos(mRadialAngle);
+                calculatedPos.Y += mGrappleLength * MathF.Sin(mRadialAngle);
+
+                SetCentrePos(calculatedPos);
+                ForceInBounds(GameScreen.PLAYABLE_AREA);
+            }
         }
 
         void HandleKeys(GameTime gameTime)
@@ -154,22 +175,25 @@
             mGrappleLength = 0.0f;
             mGrappleDir = (InputManager.I.GetMouseWorldPos() - GetCentrePos());
             mGrappledEntity = null;
+            mRadialAngleSpeed = 0.0f;
         }
 
         void EndGrapple()
         {
             mGrappleInAction = false;
             mGrappledEntity = null;
+            mRadialAngleSpeed = 0.0f;
         }
 
         void UpdateGrapple(GameTime gameTime)
         {
             float dt = Util.GetDeltaT(gameTime);
-
             if (mGrappleInAction)
             {
+                MonoDebug.DLog("Update grap {0} ", mRadialAngleSpeed);
                 if (mGrappledEntity is null)
                 {
+                    MonoDebug.DLog("   Entity is null");
                     if (mGrappleLength >= GRAPPLE_MAX_LENGTH)
                     {
                         EndGrapple();
@@ -180,7 +204,6 @@
                         mGrappleLength += dt * speed;
                     }
 
-
                     Vector2 grappleHead = GetGrappleHead();
                     AIEntity nearestToGrappleHead = EntityManager.I.GetNearestOfType<AIEntity>(GetGrappleHead());
                     float distanceToGrappleHead = (grappleHead - nearestToGrappleHead.GetCentrePos()).Length();
@@ -190,9 +213,38 @@
                         mGrappledEntity = nearestToGrappleHead;
                     }
                 }
-                else
+                else if(mRadialAngleSpeed == 0.0f)
                 {
+                    MonoDebug.DLog("    Consider spin");
                     mGrappleDir = (mGrappledEntity.GetCentrePos() - GetCentrePos());
+                    mGrappleLength = mGrappleDir.Length();
+
+                    Vector2 velocity = GetVelocity();
+
+                    if (velocity.LengthSquared() > 0.0f)
+                    {
+                        Vector2 ourVelocityDir = Vector2.Normalize(GetVelocity());
+                        Vector2 ourGrappleDir = Vector2.Normalize(mGrappleDir);
+
+                        float angleDiff = MonoMath.GetAngleDiff(ourVelocityDir, ourGrappleDir);
+
+                        bool angleIsGood = MathF.Abs(angleDiff) > GRAPPLE_RADIAL_SPIN_START_ANGLE;
+                        bool grappleIsBigEnough = mGrappleLength > GRAPPLE_RADIAL_SPIN_MIN_RADIUS;
+                        bool grappleIsTooBig = mGrappleLength > GRAPPLE_MAX_LENGTH;
+
+                        MonoDebug.DLog("Bool checks: {0} {1} {2}", angleIsGood, grappleIsBigEnough, grappleIsTooBig);
+
+                        if ((angleIsGood && grappleIsBigEnough) || grappleIsTooBig)
+                        {
+                            float crossProduct = ourVelocityDir.X * ourGrappleDir.Y - ourVelocityDir.Y * ourGrappleDir.X;
+                            mRadialAngleSpeed = MathF.Sign(crossProduct) * GRAPPLE_RADIAL_SPIN_SPEED / mGrappleLength;
+                            mRadialAngle = MathF.Atan2(-mGrappleDir.Y, -mGrappleDir.X);
+                        }
+                    }
+                    else if(mGrappleLength > GRAPPLE_MAX_LENGTH)
+                    {
+                        EndGrapple();
+                    }
                 }
             }
             else
