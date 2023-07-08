@@ -312,6 +312,28 @@
 
 
 
+        public T GetNearestOfType<T>(Vector2 position) where T : class
+        {
+            float smallestDistSq = float.MaxValue;
+            T retValue = null;
+            foreach(Entity entity in mRegisteredEntities)
+            {
+                if(entity is T)
+                {
+                    float distSq = (position - entity.GetCentrePos()).LengthSquared();
+                    if (distSq < smallestDistSq)
+                    {
+                        smallestDistSq = distSq;
+                        retValue = (T)Convert.ChangeType(entity, typeof(T));
+                    }
+                }
+            }
+
+            return retValue;
+        }
+
+
+
         /// <summary>
         /// Get persistent entities.
         /// </summary>

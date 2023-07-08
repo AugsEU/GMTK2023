@@ -7,6 +7,7 @@
         const float GRAPPLE_EXTEND_SPEED = 70.0f;
         const float GRAPPLE_MAX_LENGTH = 120.0f;
         const float GRAPPLE_CHANGE_SPEED = 0.4f;
+        const float GRAPPLE_LOCK_DISTANCE = 25.0f;
 
         #endregion rConstants
 
@@ -152,11 +153,13 @@
             mGrappleInAction = true;
             mGrappleLength = 0.0f;
             mGrappleDir = (InputManager.I.GetMouseWorldPos() - GetCentrePos());
+            mGrappledEntity = null;
         }
 
         void EndGrapple()
         {
             mGrappleInAction = false;
+            mGrappledEntity = null;
         }
 
         void UpdateGrapple(GameTime gameTime)
@@ -175,6 +178,16 @@
                     {
                         float speed = GRAPPLE_EXTEND_SPEED - (mGrappleLength / GRAPPLE_MAX_LENGTH) * GRAPPLE_EXTEND_SPEED * 0.85f;
                         mGrappleLength += dt * speed;
+                    }
+
+
+                    Vector2 grappleHead = GetGrappleHead();
+                    AIEntity nearestToGrappleHead = EntityManager.I.GetNearestOfType<AIEntity>(GetGrappleHead());
+                    float distanceToGrappleHead = (grappleHead - nearestToGrappleHead.GetCentrePos()).Length();
+
+                    if(distanceToGrappleHead < GRAPPLE_LOCK_DISTANCE)
+                    {
+                        mGrappledEntity = nearestToGrappleHead;
                     }
                 }
                 else
@@ -204,9 +217,7 @@
             if (mGrappleLength > 0.0f)
             {
                 Vector2 grappleStart = mCentreOfMass;
-                Vector2 grappleDir = mGrappleDir;
-                grappleDir.Normalize();
-                Vector2 grappleEnd = grappleStart + grappleDir * mGrappleLength;
+                Vector2 grappleEnd = GetGrappleHead();
 
                 if (mGrappledEntity is not null)
                 {
@@ -220,5 +231,17 @@
         }
 
         #endregion rDraw
+
+
+        #region rUtility
+
+        Vector2 GetGrappleHead()
+        {
+            Vector2 grappleDir = mGrappleDir;
+            grappleDir.Normalize();
+            return mCentreOfMass + grappleDir * mGrappleLength;
+        }
+
+        #endregion rUtility
     }
 }
