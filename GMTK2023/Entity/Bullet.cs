@@ -104,7 +104,7 @@
                     hit = true;
                 }
             }
-            else if(entity is Player)
+            else if(entity is Player && mTeam != AITeam.Ally)
             {
                 Player player = (Player)entity;
 
