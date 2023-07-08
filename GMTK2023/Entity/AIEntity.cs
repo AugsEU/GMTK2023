@@ -5,6 +5,7 @@
         #region rConstants
 
         const float TARGET_REACHED_DIST = 40.0f;
+        const double MIN_DIRECTION_CHANGE_TIME = 300.0;
 
         #endregion rConstants
 
@@ -29,6 +30,13 @@
         AITeam mCurrentTeam;
         Vector2 mCurrentTarget;
 
+        bool mStopped;
+        MonoTimer mStopTimer;
+        float mStopDuration;
+
+        EightDirection mPrevDirection;
+        PercentageTimer mDirChangeTimer;
+
         #endregion rMembers
 
 
@@ -37,6 +45,13 @@
         public AIEntity(Vector2 pos, float angle) : base(pos, angle)
         {
             mCurrentTarget = Vector2.Zero;
+            mStopped = false;
+            mStopTimer = new MonoTimer();
+            mStopTimer.Start();
+            mStopDuration = 0.0f;
+            mPrevDirection = GetCurrentDir();
+            mDirChangeTimer = new PercentageTimer(MIN_DIRECTION_CHANGE_TIME);
+            mDirChangeTimer.Start();
         }
 
         public override void LoadContent()
@@ -82,9 +97,10 @@
                 GetNewTarget();
             }
 
-            GoToTarget(gameTime);
+            ConsiderStop();
 
-            SetAcelerate(true);
+            GoToTarget(gameTime);
+            SetAcelerate(!mStopped);
 
             base.Update(gameTime);
         }
@@ -99,7 +115,36 @@
             Vector2 toTarget = mCurrentTarget - mCentreOfMass;
             float angle = -MathF.Atan2(toTarget.Y, toTarget.X);
             EightDirection dir = Util.GetDirectionFromAngle(angle);
-            TargetDirection(dir);
+
+            if(dir != mPrevDirection && mDirChangeTimer.GetPercentageF() >= 1.0f)
+            {
+                TargetDirection(dir);
+                mPrevDirection = dir;
+                mDirChangeTimer.Reset();
+                mDirChangeTimer.Start();
+            }
+        }
+
+        void ConsiderStop()
+        {
+            if (mStopDuration == 0.0f)
+            {
+                if(mStopped)
+                {
+                    mStopDuration = RandomManager.I.GetWorld().GetFloatRange(1500.0f, 2500.0f);
+                }
+                else
+                {
+                    mStopDuration = RandomManager.I.GetWorld().GetFloatRange(10500.0f, 25500.0f);
+                }
+            }
+
+            if (mStopTimer.GetElapsedMs() > mStopDuration)
+            {
+                mStopped = !mStopped;
+                mStopDuration = 0.0f;
+                mStopTimer.Reset();
+            }
         }
 
         #endregion rUpdate
@@ -124,6 +169,13 @@
             }
 
             mCurrentTarget = AITargetManager.I.GiveMeATarget();
+
+            if(RandomManager.I.GetWorld().PercentChance(10.0f))
+            {
+                mStopDuration = RandomManager.I.GetWorld().GetFloatRange(1500.0f, 2500.0f);
+                mStopped = true;
+                mStopTimer.Reset();
+            }
         }
 
         #endregion rUtil

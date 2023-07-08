@@ -27,6 +27,7 @@
             mSpeed = 0.0f;
             mTargetAngle = angle;
             mTurnSpeed = turnSpeed;
+            mCurrentDirection = Util.GetDirectionFromAngle(mCurrentAngle);
         }
 
         #endregion rInit
@@ -87,6 +88,11 @@
         {
             mCurrentAngle = angle;
             mTargetAngle = angle;
+        }
+
+        protected EightDirection GetCurrentDir()
+        {
+            return mCurrentDirection;
         }
 
         #endregion rUpdate
