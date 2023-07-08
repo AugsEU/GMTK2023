@@ -5,6 +5,9 @@
     /// </summary>
     abstract class Entity
     {
+        protected static Rectangle PLAYABLE_AREA = new Rectangle(0, 88, 960, 417);
+
+
         #region rMembers
 
         // Keep track for IDs. Might be problems if you spawn 2^64 entities in a single play session.
@@ -125,6 +128,31 @@
         /// </summary>
         protected virtual void CalculateUpdateOrder()
         {
+        }
+
+        protected void ForceInBounds(Rectangle area)
+        {
+            Rect2f collider = ColliderBounds();
+
+            if (mPosition.X < area.X)
+            {
+                mPosition.X = area.X;
+            }
+
+            if (mPosition.X + collider.Width > area.X + area.Width)
+            {
+                mPosition.X = area.X + area.Width - collider.Width;
+            }
+
+            if (mPosition.Y < area.Y)
+            {
+                mPosition.Y = area.Y;
+            }
+
+            if (mPosition.Y + collider.Height > area.Y + area.Height)
+            {
+                mPosition.Y = area.Y + area.Height - collider.Height;
+            }
         }
 
 

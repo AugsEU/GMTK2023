@@ -2,6 +2,7 @@
 {
     internal abstract class EightWayMover : Entity
     {
+
         #region rMembers
 
         protected Animator[] mDirectionTextures;
@@ -52,7 +53,12 @@
             }
 
             mCurrentDirection = Util.GetDirectionFromAngle(mCurrentAngle);
+
+            Vector2 speedVec = mSpeed * dt * MonoMath.GetVectorFromAngle(-mCurrentAngle);
+
             mPosition += mSpeed * dt * MonoMath.GetVectorFromAngle(-mCurrentAngle);
+
+            ForceInBounds(PLAYABLE_AREA);
 
             foreach(Animator animator in mDirectionTextures)
             {
@@ -61,6 +67,9 @@
 
             base.Update(gameTime);
         }
+
+
+
 
 
         protected void TargetDirection(EightDirection direction)

@@ -5,10 +5,19 @@
     /// </summary>
     internal class GameScreen : Screen
     {
+        Texture2D mBG;
+
         Player testPlayer;
 
         public GameScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
+        }
+
+        public override void LoadContent()
+        {
+            mBG = MonoData.I.MonoGameLoad<Texture2D>("Backgrounds/GameScreen");
+
+            base.LoadContent();
         }
 
         public override void OnActivate()
@@ -27,6 +36,7 @@
 
             StartScreenSpriteBatch(info);
 
+            MonoDraw.DrawTextureDepth(info, mBG, Vector2.Zero, DrawLayer.Background);
             EntityManager.I.Draw(info);
 
             EndScreenSpriteBatch(info);
