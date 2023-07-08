@@ -48,7 +48,7 @@
             }
             else
             {
-                mCurrentAngle -= MathF.Sign(angleDiff) * angleDelta;
+                mCurrentAngle += MathF.Sign(angleDiff) * angleDelta;
             }
 
             mCurrentDirection = Util.GetDirectionFromAngle(mCurrentAngle);
@@ -61,6 +61,7 @@
 
             base.Update(gameTime);
         }
+
 
         protected void TargetDirection(EightDirection direction)
         {

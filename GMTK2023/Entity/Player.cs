@@ -1,10 +1,7 @@
 ﻿namespace GMTK2023
 {
-    internal class Player : EightWayMover
+    internal class Player : Motorbike
     {
-        const float MOVE_SPEED = 10.0f;
-        const float TURN_SPEED = 1.1f;
-
         #region rMembers
 
         #endregion rMembers
@@ -12,7 +9,7 @@
 
         #region rInit
 
-        public Player(Vector2 pos, float angle) : base(pos, angle, TURN_SPEED)
+        public Player(Vector2 pos, float angle) : base(pos, angle)
         {
 
         }
@@ -50,7 +47,7 @@
             bool left = InputManager.I.KeyHeld(GameKeys.MoveLeft);
             bool right = InputManager.I.KeyHeld(GameKeys.MoveRight);
 
-            mSpeed = MOVE_SPEED;
+            SetAcelerate(true);
 
             if (up)
             {
@@ -95,7 +92,7 @@
             }
             else
             {
-                mSpeed = 0.0f;
+                SetAcelerate(false);
             }
         }
 

@@ -88,16 +88,20 @@ namespace GMTK2023
             return angle % (MathF.PI * 2.0f);
         }
 
-        public static float GetAngleDiff(float angle1, float angle2)
+        public static float GetAngleDiff(float from, float to)
         {
-            angle1 = MainBranchRadian(angle1);
-            angle2 = MainBranchRadian(angle2);
+            from = MainBranchRadian(from);
+            to = MainBranchRadian(to);
 
-            float diff = MathF.Abs(angle1 - angle2);
+            float diff = from - to;
 
             if(diff > MathF.PI)
             {
                 diff -= MathF.PI * 2.0f;
+            }
+            else if(diff < -Math.PI)
+            {
+                diff += MathF.PI * 2.0f;
             }
 
             return diff;
