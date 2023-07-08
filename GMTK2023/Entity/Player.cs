@@ -11,6 +11,9 @@
         const float GRAPPLE_RADIAL_SPIN_SPEED = Motorbike.MAX_SPEED + 10.0f;
         const float GRAPPLE_RADIAL_SPIN_START_ANGLE = 0.9f;
         const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 15.0f;
+        const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.85f;
+
+        const int MAX_HEALTH = 7;
 
         #endregion rConstants
 
@@ -26,6 +29,10 @@
         AIEntity mGrappledEntity;
         float mRadialAngleSpeed;
         float mRadialAngle;
+        float mTotalRadialAngleTravelled;
+
+
+        int mHealth;
 
         #endregion rMembers
 
@@ -38,6 +45,9 @@
             mGrappleInAction = false;
             mRadialAngleSpeed = 0.0f;
             mRadialAngle = 0.0f;
+            mTotalRadialAngleTravelled = 0.0f;
+
+            mHealth = MAX_HEALTH;
         }
 
         public override void LoadContent()
@@ -73,6 +83,7 @@
             if(MathF.Abs(mRadialAngleSpeed) > 0.0f && mGrappledEntity is not null)
             {
                 mRadialAngle += dt * mRadialAngleSpeed;
+                mTotalRadialAngleTravelled += MathF.Abs(dt * mRadialAngleSpeed);
                 ForceAngle(-mRadialAngle - MathF.Sign(mRadialAngleSpeed) * MathF.PI / 2.0f);
                 mSpeed = GRAPPLE_RADIAL_SPIN_SPEED;
                 Vector2 calculatedPos = mGrappledEntity.GetCentrePos();
@@ -81,6 +92,11 @@
 
                 SetCentrePos(calculatedPos);
                 ForceInBounds(GameScreen.PLAYABLE_AREA);
+
+                if(mTotalRadialAngleTravelled > GRAPPLE_ANGLE_TO_CHANGE_TEAM)
+                {
+                    mGrappledEntity.SetTeam(AITeam.Ally);
+                }
             }
         }
 
@@ -176,6 +192,7 @@
             mGrappleDir = (InputManager.I.GetMouseWorldPos() - GetCentrePos());
             mGrappledEntity = null;
             mRadialAngleSpeed = 0.0f;
+            mTotalRadialAngleTravelled = 0.0f;
         }
 
         void EndGrapple()
@@ -183,6 +200,7 @@
             mGrappleInAction = false;
             mGrappledEntity = null;
             mRadialAngleSpeed = 0.0f;
+            mTotalRadialAngleTravelled = 0.0f;
         }
 
         void UpdateGrapple(GameTime gameTime)
@@ -292,6 +310,15 @@
             Vector2 grappleDir = mGrappleDir;
             grappleDir.Normalize();
             return mCentreOfMass + grappleDir * mGrappleLength;
+        }
+
+        public void AddHealth(int delta)
+        {
+            mHealth += delta;
+            if(mHealth <= 0)
+            {
+                Kill();
+            }
         }
 
         #endregion rUtility

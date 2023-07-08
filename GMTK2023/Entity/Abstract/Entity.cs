@@ -153,6 +153,12 @@
         }
 
 
+        public virtual void Kill()
+        {
+            EntityManager.I.QueueDeleteEntity(this);
+        }
+
+
         #endregion rUpdate
 
 

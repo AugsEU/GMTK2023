@@ -18,6 +18,7 @@
         SubEntity,
         Default,
         Player,
+        Bullets,
         Text,
         Front,
         NumLayers

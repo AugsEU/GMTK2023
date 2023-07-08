@@ -1,5 +1,15 @@
 ﻿namespace GMTK2023
 {
+    #region rTypes
+
+    public enum AITeam
+    {
+        Ally,
+        Enemy
+    }
+
+    #endregion rTypes
+
     internal class AIEntity : Motorbike
     {
         #region rConstants
@@ -8,20 +18,6 @@
         const double MIN_DIRECTION_CHANGE_TIME = 300.0;
 
         #endregion rConstants
-
-
-
-
-
-        #region rTypes
-
-        public enum AITeam
-        {
-            Ally,
-            Enemy
-        }
-
-        #endregion rTypes
 
 
         #region rMembers
@@ -155,10 +151,15 @@
 
         #region rUtil
 
-        void SetTeam(AITeam aiTeam)
+        public void SetTeam(AITeam aiTeam)
         {
             mCurrentTeam = aiTeam;
             mDirectionTextures = mTeamSkins[(int)aiTeam];
+        }
+
+        public AITeam GetTeam()
+        {
+            return mCurrentTeam;
         }
 
         void GetNewTarget()
