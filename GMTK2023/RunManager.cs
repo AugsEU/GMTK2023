@@ -38,6 +38,7 @@
             {
                 mHighScore = mRoundNumber;
             }
+            SoundManager.I.PlaySFX(SoundManager.SFXType.GameOver, 1.0f);
         }
 
         public int GetHealth()

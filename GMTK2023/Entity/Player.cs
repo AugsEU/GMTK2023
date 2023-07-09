@@ -331,6 +331,10 @@
             {
                 Kill();
             }
+            else if(delta < 0)
+            {
+                SoundManager.I.PlaySFX(SoundManager.SFXType.PlayerHit, 0.8f);
+            }
         }
 
         public void SetHealth(int health)

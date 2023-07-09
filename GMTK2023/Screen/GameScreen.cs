@@ -64,6 +64,7 @@ namespace GMTK2023
             if(RunManager.I.HasStarted() == false)
             {
                 RunManager.I.StartRun();
+                SoundManager.I.PlayMusic(SoundManager.MusicType.MainGame, 0.55f);
             }
 
             EntityManager.I.ClearEntities();
@@ -135,7 +136,7 @@ namespace GMTK2023
                 return;
             }
 
-            if(mReadyGoTimer.GetElapsedMs() > READY_TIME + GO_TIME)
+            if(mReadyGoTimer.GetElapsedMs() > GetReadyTime())
             {
                 EntityManager.I.Update(gameTime);
             }
@@ -211,7 +212,7 @@ namespace GMTK2023
             }
             else
             {
-                if (mReadyGoTimer.GetElapsedMs() < READY_TIME + GO_TIME)
+                if (mReadyGoTimer.GetElapsedMs() < GetReadyTime() + GO_TIME)
                 {
                     DrawReadyGoText(info);
                 }
@@ -271,20 +272,22 @@ namespace GMTK2023
 
         public void DrawReadyGoText(DrawInfo info)
         {
+
             SpriteFont font = FontManager.I.GetFont("Pixica-24");
             double time = mReadyGoTimer.GetElapsedMs();
             string text = "Ready?";
             Vector2 pos = new Vector2(SCREEN_WIDTH / 2.0f, 0.0f);
 
-            if(time > READY_TIME)
+            if(time > GetReadyTime())
             {
                 text = "GO!";
                 pos.Y = SCREEN_HEIGHT / 2.0f;
             }
             else
             {
-                float t = MathF.Min((float)(time / READY_TIME) * 2.0f, 1.0f);
+                float t = MathF.Min((float)(time / GetReadyTime()) * 2.0f, 1.0f);
                 pos.Y = t * SCREEN_HEIGHT / 2.0f;
+                MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
             }
 
             MonoDraw.DrawShadowStringCentred(info, font, pos, Color.White, text, DrawLayer.Text);
@@ -295,6 +298,10 @@ namespace GMTK2023
         #endregion rDraw
 
 
+        double GetReadyTime()
+        {
+            return RunManager.I.GetRounds() == 0 ? 4000.0 : READY_TIME;
+        }
 
 
     }

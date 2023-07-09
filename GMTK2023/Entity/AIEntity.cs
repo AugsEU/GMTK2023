@@ -262,6 +262,11 @@
 
         public void SetTeam(AITeam aiTeam)
         {
+            if(aiTeam == AITeam.Ally && mCurrentTeam == AITeam.Enemy)
+            {
+                SoundManager.I.PlaySFX(SoundManager.SFXType.Convert, 0.7f);
+            }
+
             mCurrentTeam = aiTeam;
             mDirectionTextures = mTeamSkins[(int)aiTeam];
         }

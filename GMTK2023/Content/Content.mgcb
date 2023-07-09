@@ -394,6 +394,30 @@
 /processorParam:TextureFormat=Color
 /build:Player/PlayerUpRight.png
 
+#begin Sound/Convert.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Convert.wav
+
+#begin Sound/GameOverSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GameOverSFX.wav
+
+#begin Sound/GMTK2023.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/GMTK2023.mp3
+
+#begin Sound/PlayerHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/PlayerHit.wav
+
 #begin UI/ButtonBack.png
 /importer:TextureImporter
 /processor:TextureProcessor
