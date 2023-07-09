@@ -47,6 +47,8 @@
 
         bool mBeingGrappled = false;
 
+        Texture2D mPentagram;
+
         #endregion rMembers
 
 
@@ -97,6 +99,8 @@
             mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.UpRight]     = MonoData.I.LoadAnimator("Enemies/EnemyUpRight");
 
             mTexture = MonoData.I.MonoGameLoad<Texture2D>("Enemies/AllyUp");
+
+            mPentagram = MonoData.I.MonoGameLoad<Texture2D>("Effects/pent");
 
             SetTeam(AITeam.Enemy);
         }
@@ -250,6 +254,11 @@
                 {
                     return;
                 }
+            }
+
+            if(mBeingGrappled && mCurrentTeam == AITeam.Enemy)
+            {
+                MonoDraw.DrawTextureDepth(info, mPentagram, mCentreOfMass - new Vector2(mPentagram.Width, mPentagram.Height) * 0.5f, DrawLayer.SubEntity);
             }
 
             base.Draw(info);
