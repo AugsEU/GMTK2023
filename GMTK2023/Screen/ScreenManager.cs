@@ -10,9 +10,9 @@ namespace GMTK2023
     enum ScreenType
     {
         Title,
-        LevelStart,
         Game,
         GameOver,
+        NextRound,
         None
     }
 
@@ -44,6 +44,8 @@ namespace GMTK2023
 
             LoadScreen(ScreenType.Game, new GameScreen(deviceManager));
             LoadScreen(ScreenType.Title, new TitleScreen(deviceManager));
+            LoadScreen(ScreenType.NextRound, new NextRoundScreen(deviceManager));
+            LoadScreen(ScreenType.GameOver, new GameOverScreen(deviceManager));
         }
 
 

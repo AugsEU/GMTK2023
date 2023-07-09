@@ -43,5 +43,18 @@
             col.G = (byte)((col.G * (1 - bright)) + (255 * bright));
             col.B = (byte)((col.B * (1 - bright)) + (255 * bright));
         }
+
+
+        /// <summary>
+        /// Brighten colour linearly
+        /// </summary>
+        /// <param name="col">Initial colour, output value</param>
+        /// <param name="bright">Brightness factor from 0 to 1</param>
+        public static void DarkenColour(ref Color col, float bright)
+        {
+            col.R = (byte)((col.R * bright));
+            col.G = (byte)((col.G * bright));
+            col.B = (byte)((col.B * bright));
+        }
     }
 }

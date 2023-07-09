@@ -94,7 +94,7 @@ namespace GMTK2023
             CameraManager.I.Init();
 
             ScreenManager.I.LoadAllScreens(_graphics);
-            ScreenManager.I.ActivateScreen(ScreenType.Game);
+            ScreenManager.I.ActivateScreen(ScreenType.Title);
         }
 
         #endregion rInit

@@ -146,6 +146,24 @@
             info.spriteBatch.DrawString(font, text, position - size / 2, color, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, GetDepth(depth));
         }
 
+
+        /// <summary>
+        /// Draw a string centred at a position
+        /// </summary>
+        public static void DrawShadowStringCentred(DrawInfo info, SpriteFont font, Vector2 position, Color color, string text, DrawLayer depth = DrawLayer.Text)
+        {
+            Vector2 size = font.MeasureString(text);
+
+            Color dropColor = color;
+            MonoColor.DarkenColour(ref dropColor, 0.1f);
+
+            Vector2 pos = position - size / 2;
+            Vector2 dropPos = pos + new Vector2(2.0f, 2.0f);
+
+            info.spriteBatch.DrawString(font, text, dropPos, dropColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, GetDepth(depth));
+            info.spriteBatch.DrawString(font, text, pos, color, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, GetDepth(depth));
+        }
+
         /// <summary>
         /// Draw a string at position(top left)
         /// </summary>

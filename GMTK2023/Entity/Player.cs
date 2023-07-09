@@ -318,10 +318,16 @@
             }
         }
 
+        public void SetHealth(int health)
+        {
+            mHealth = Math.Min(health, MAX_HEALTH);
+        }
+
         public int GetHealth()
         {
             return mHealth;
         }
+
 
         #endregion rUtility
     }

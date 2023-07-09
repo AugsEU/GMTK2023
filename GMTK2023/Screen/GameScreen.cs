@@ -1,4 +1,6 @@
-﻿namespace GMTK2023
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace GMTK2023
 {
     /// <summary>
     /// Gameplay screen
@@ -8,6 +10,8 @@
         public static Rectangle PLAYABLE_AREA = new Rectangle(0, 88, 960, 417);
         public const double READY_TIME = 1500.0;
         public const double GO_TIME = 500.0;
+        const double WIN_TIME = 1500.0;
+        const double LOSS_TIME = 1500.0;
 
         #region rMembers
 
@@ -21,6 +25,8 @@
         Player mPlayer;
 
         MonoTimer mReadyGoTimer;
+        PercentageTimer mWinTimer;
+        PercentageTimer mLossTimer;
 
         #endregion rMembers
 
@@ -30,6 +36,9 @@
         public GameScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
             mReadyGoTimer = new MonoTimer();
+            mWinTimer = new PercentageTimer(WIN_TIME);
+            mLossTimer = new PercentageTimer(LOSS_TIME);
+
         }
 
         public override void LoadContent()
@@ -50,11 +59,19 @@
             mReadyGoTimer.FullReset();
             mReadyGoTimer.Start();
 
+            if(RunManager.I.HasStarted() == false)
+            {
+                RunManager.I.StartRun();
+            }
+
             EntityManager.I.ClearEntities();
             AITargetManager.I.Init();
 
             SpawnInitialEntities();
             base.OnActivate();
+
+            mWinTimer.FullReset();
+            mLossTimer.FullReset();
         }
 
 
@@ -69,7 +86,9 @@
             EntityManager.I.RegisterEntity(mPlayer);
             AITargetManager.I.RegisterPos(playerSpawn);
 
-            int numToSpawn = 10;
+            mPlayer.SetHealth(RunManager.I.GetHealth());
+
+            int numToSpawn = RunManager.I.GetNumberOfEnemies();
 
             for(int i = 0; i < numToSpawn; i++)
             {
@@ -90,10 +109,59 @@
 
         public override void Update(GameTime gameTime)
         {
+            if(mLossTimer.IsPlaying() || mWinTimer.IsPlaying())
+            {
+                if (mLossTimer.GetPercentageF() >= 1.0f)
+                {
+                    ScreenManager.I.ActivateScreen(ScreenType.GameOver);
+                }
+                else if(mWinTimer.GetPercentageF() >= 1.0f)
+                {
+                    ScreenManager.I.ActivateScreen(ScreenType.NextRound);
+                }
+
+                return;
+            }
+
             if(mReadyGoTimer.GetElapsedMs() > READY_TIME + GO_TIME)
             {
                 EntityManager.I.Update(gameTime);
             }
+
+            CheckForWinOrLoss();
+        }
+
+
+        void CheckForWinOrLoss()
+        {
+            if(EntityManager.I.GetAllOfType(typeof(Player)).Count == 0)
+            {
+                LoseGame();
+                return;
+            }
+
+            List<Entity> aiBots = EntityManager.I.GetAllOfType(typeof(AIEntity));
+            foreach(AIEntity aIEntity in aiBots)
+            {
+                if(aIEntity.GetTeam() == AITeam.Enemy)
+                {
+                    return;
+                }
+            }
+
+            WinRound();
+        }
+
+        void WinRound()
+        {
+            mWinTimer.Start();
+            RunManager.I.EndRound();
+        }
+
+        void LoseGame()
+        {
+            mLossTimer.Start();
+            RunManager.I.EndRun();
         }
 
         #endregion rUpdate
@@ -121,9 +189,36 @@
 
         public void DrawUI(DrawInfo info)
         {
-            if(mReadyGoTimer.GetElapsedMs() < READY_TIME + GO_TIME)
+            SpriteFont font = FontManager.I.GetFont("Pixica-24");
+
+            if (mReadyGoTimer.GetElapsedMs() < READY_TIME + GO_TIME)
             {
                 DrawReadyGoText(info);
+            }
+
+            if(mWinTimer.IsPlaying())
+            {
+                Vector2 centre = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) * 0.5f;
+                float flash = mWinTimer.GetPercentageF() % 0.5f;
+                Color textColor = Color.White;
+                if(flash > 0.25f)
+                {
+                    textColor = Color.Yellow;
+                }
+                MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
+                MonoDraw.DrawShadowStringCentred(info, font, centre, textColor, "Round Won", DrawLayer.Text);
+            }
+            else if (mLossTimer.IsPlaying())
+            {
+                Vector2 centre = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) * 0.5f;
+                float flash = mLossTimer.GetPercentageF() % 0.5f;
+                Color textColor = Color.Orange;
+                if (flash > 0.25f)
+                {
+                    textColor = Color.Red;
+                }
+                MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
+                MonoDraw.DrawShadowStringCentred(info, font, centre, textColor, "Round Lost", DrawLayer.Text);
             }
 
             DrawHealthBar(info, new Vector2(44.0f, 20.0f));
@@ -173,8 +268,7 @@
                 pos.Y = t * SCREEN_HEIGHT / 2.0f;
             }
 
-            MonoDraw.DrawStringCentred(info, font, pos + new Vector2(2.0f, 2.0f), Color.DarkBlue, text, DrawLayer.Text);
-            MonoDraw.DrawStringCentred(info, font, pos, Color.White, text, DrawLayer.Text);
+            MonoDraw.DrawShadowStringCentred(info, font, pos, Color.White, text, DrawLayer.Text);
         }
 
         #endregion rDraw

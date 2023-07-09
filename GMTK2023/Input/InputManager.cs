@@ -132,6 +132,12 @@
         }
 
 
+        public bool IsLClickDown()
+        {
+            return mMouseState.LeftButton == ButtonState.Pressed;
+        }
+
+
         #endregion rKeySense
     }
 }

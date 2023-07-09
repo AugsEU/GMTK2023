@@ -2,19 +2,17 @@
 
 namespace GMTK2023
 {
-    internal class TitleScreen : Screen
+    internal class NextRoundScreen : Screen
     {
-        Texture2D mBackgroundTex;
-        ScreenTransitionButton mStartGameBtn;
+        ScreenTransitionButton mNextRoundButton;
 
-        public TitleScreen(GraphicsDeviceManager graphics) : base(graphics)
+        public NextRoundScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
-            mStartGameBtn = new ScreenTransitionButton(new Vector2(500.0f, 200.0f), "Start Game", ScreenType.Game);
+            mNextRoundButton = new ScreenTransitionButton(new Vector2(500.0f, 200.0f), "Next Round", ScreenType.Game);
         }
 
         public override void LoadContent()
         {
-            mBackgroundTex = MonoData.I.MonoGameLoad<Texture2D>("Backgrounds/TitleScreen");
             base.LoadContent();
         }
 
@@ -30,9 +28,7 @@ namespace GMTK2023
 
             StartScreenSpriteBatch(info);
 
-            MonoDraw.DrawTextureDepth(info, mBackgroundTex, Vector2.Zero, DrawLayer.BackgroundElement);
-
-            mStartGameBtn.Draw(info);
+            mNextRoundButton.Draw(info);
 
             EndScreenSpriteBatch(info);
 
@@ -41,7 +37,7 @@ namespace GMTK2023
 
         public override void Update(GameTime gameTime)
         {
-            mStartGameBtn.Update(gameTime);
+            mNextRoundButton.Update(gameTime);
         }
     }
 }
