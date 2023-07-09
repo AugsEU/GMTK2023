@@ -92,9 +92,14 @@
             return mCurrentDirection;
         }
 
-        protected Vector2 GetVelocity()
+        public Vector2 GetVelocity()
         {
             return MonoMath.GetVectorFromAngle(-mCurrentAngle) * mSpeed;
+        }
+
+        public float GetCurrentAngle()
+        {
+            return mCurrentAngle;
         }
 
         #endregion rUpdate
