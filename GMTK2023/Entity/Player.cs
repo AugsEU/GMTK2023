@@ -210,6 +210,12 @@
             float dt = Util.GetDeltaT(gameTime);
             if (mGrappleInAction)
             {
+                if(mGrappledEntity is not null && mGrappledEntity.IsDead())
+                {
+                    EndGrapple();
+                    return;
+                }
+
                 if (mGrappledEntity is null)
                 {
                     if (mGrappleLength >= GRAPPLE_MAX_LENGTH)
@@ -218,7 +224,7 @@
                     }
                     else
                     {
-                        float speed = GRAPPLE_EXTEND_SPEED - (mGrappleLength / GRAPPLE_MAX_LENGTH) * GRAPPLE_EXTEND_SPEED * 0.85f;
+                        float speed = Math.Max(GRAPPLE_EXTEND_SPEED - (mGrappleLength / GRAPPLE_MAX_LENGTH) * GRAPPLE_EXTEND_SPEED * 0.85f, 3.0f);
                         mGrappleLength += dt * speed;
                     }
 
@@ -264,7 +270,7 @@
             }
             else
             {
-                float speed = GRAPPLE_EXTEND_SPEED - (mGrappleLength / GRAPPLE_MAX_LENGTH) * GRAPPLE_EXTEND_SPEED * 0.25f;
+                float speed = Math.Max(GRAPPLE_EXTEND_SPEED - (mGrappleLength / GRAPPLE_MAX_LENGTH) * GRAPPLE_EXTEND_SPEED * 0.25f, 3.0f);
                 speed *= 1.5f;
                 mGrappleLength -= dt * speed;
             }

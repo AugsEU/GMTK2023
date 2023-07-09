@@ -37,6 +37,8 @@
         MonoTimer mShootBulletTimer;
         float mShootDuration;
 
+        bool mIsDead = false;
+
         #endregion rMembers
 
 
@@ -164,6 +166,13 @@
             EntityManager.I.QueueRegisterEntity(new Bullet(mPosition, GetCurrentDir(), GetTeam()));
         }
 
+        public override void Kill()
+        {
+            mIsDead = true;
+
+            base.Kill();
+        }
+
         #endregion rUpdate
 
 
@@ -198,6 +207,11 @@
                 mStopped = true;
                 mStopTimer.Reset();
             }
+        }
+
+        public bool IsDead()
+        {
+            return mIsDead;
         }
 
         #endregion rUtil
