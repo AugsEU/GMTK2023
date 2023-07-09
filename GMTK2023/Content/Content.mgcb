@@ -514,6 +514,20 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/PixicaSmall.spritefont
 
+#begin Fonts/Scream.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Scream.spritefont
+
+#begin Fonts/ScreamBig.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ScreamBig.spritefont
+
 #begin Player/PlayerDown.png
 /importer:TextureImporter
 /processor:TextureProcessor

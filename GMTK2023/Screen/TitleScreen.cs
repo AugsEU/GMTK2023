@@ -13,7 +13,7 @@ namespace GMTK2023
 
         public TitleScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
-            mStartGameBtn = new ScreenTransitionButton(new Vector2(700.0f, 50.0f), "Start Game", ScreenType.Game);
+            mStartGameBtn = new ScreenTransitionButton(new Vector2(700.0f, 50.0f), "Play", ScreenType.Game);
             mExitGameBtn = new ExitGameButton(new Vector2(700.0f, 250.0f), "Exit");
             mTutorialBtn = new ScreenTransitionButton(new Vector2(700.0f, 150.0f), "Help", ScreenType.Tutorial);
         }
