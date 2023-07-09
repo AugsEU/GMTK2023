@@ -47,6 +47,7 @@ namespace GMTK2023
             LoadScreen(ScreenType.Title, new TitleScreen(deviceManager));
             LoadScreen(ScreenType.NextRound, new NextRoundScreen(deviceManager));
             LoadScreen(ScreenType.GameOver, new GameOverScreen(deviceManager));
+            LoadScreen(ScreenType.Tutorial, new TutorialScreen(deviceManager));
         }
 
 
