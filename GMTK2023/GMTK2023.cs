@@ -24,7 +24,7 @@ namespace GMTK2023
 
         private Rectangle windowedRect;
         private int mSlowDownCount;
-        static GMTK2023 sInstance;
+        public static GMTK2023 sInstance;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;

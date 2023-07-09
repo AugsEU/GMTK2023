@@ -13,6 +13,7 @@ namespace GMTK2023
         Game,
         GameOver,
         NextRound,
+        Tutorial,
         None
     }
 

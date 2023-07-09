@@ -5,16 +5,23 @@ namespace GMTK2023
     internal class TitleScreen : Screen
     {
         Texture2D mBackgroundTex;
+        Texture2D mLogo;
+
         ScreenTransitionButton mStartGameBtn;
+        ScreenTransitionButton mTutorialBtn;
+        ExitGameButton mExitGameBtn;
 
         public TitleScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
-            mStartGameBtn = new ScreenTransitionButton(new Vector2(500.0f, 200.0f), "Start Game", ScreenType.Game);
+            mStartGameBtn = new ScreenTransitionButton(new Vector2(700.0f, 50.0f), "Start Game", ScreenType.Game);
+            mExitGameBtn = new ExitGameButton(new Vector2(700.0f, 250.0f), "Exit");
+            mTutorialBtn = new ScreenTransitionButton(new Vector2(700.0f, 150.0f), "Help", ScreenType.Tutorial);
         }
 
         public override void LoadContent()
         {
             mBackgroundTex = MonoData.I.MonoGameLoad<Texture2D>("Backgrounds/TitleScreen");
+            mLogo = MonoData.I.MonoGameLoad<Texture2D>("UI/TitleLogo");
             base.LoadContent();
         }
 
@@ -32,7 +39,11 @@ namespace GMTK2023
 
             MonoDraw.DrawTextureDepth(info, mBackgroundTex, Vector2.Zero, DrawLayer.BackgroundElement);
 
+            MonoDraw.DrawTextureDepth(info, mLogo, new Vector2(32.0f, 16.0f), DrawLayer.BackgroundElement);
+
             mStartGameBtn.Draw(info);
+            mExitGameBtn.Draw(info);
+            mTutorialBtn.Draw(info);
 
             EndScreenSpriteBatch(info);
 
@@ -42,6 +53,8 @@ namespace GMTK2023
         public override void Update(GameTime gameTime)
         {
             mStartGameBtn.Update(gameTime);
+            mExitGameBtn.Update(gameTime);
+            mTutorialBtn.Update(gameTime);
         }
     }
 }
