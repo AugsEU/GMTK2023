@@ -8,7 +8,7 @@
         const float GRAPPLE_MAX_LENGTH = 120.0f;
         const float GRAPPLE_CHANGE_SPEED = 0.4f;
         const float GRAPPLE_LOCK_DISTANCE = 25.0f;
-        const float GRAPPLE_RADIAL_SPIN_SPEED = MAX_SPEED + 10.0f;
+        const float GRAPPLE_RADIAL_SPIN_SPEED = MAX_SPEED + 20.0f;
         const float GRAPPLE_RADIAL_SPIN_START_ANGLE = 0.9f;
         const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 25.0f;
         const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.75f;
@@ -210,6 +210,12 @@
             }
             mGrappledEntity = null;
             mRadialAngleSpeed = 0.0f;
+
+            if(mTotalRadialAngleTravelled > MathF.PI)
+            {
+                mSpeed += 10.0f;
+            }
+
             mTotalRadialAngleTravelled = 0.0f;
         }
 
