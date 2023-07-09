@@ -333,7 +333,10 @@
             }
             else if(delta < 0)
             {
-                SoundManager.I.PlaySFX(SoundManager.SFXType.PlayerHit, 0.8f);
+                SoundManager.I.PlaySFX(SoundManager.SFXType.PlayerHit, 0.6f);
+                Camera gameCam = CameraManager.I.GetCamera(CameraManager.CameraInstance.ScreenCamera);
+
+                gameCam.QueueMovement(new DiminishCameraShake(1.5f, 3.0f, 25.0f));
             }
         }
 

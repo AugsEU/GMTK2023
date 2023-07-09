@@ -39,6 +39,9 @@
                 mHighScore = mRoundNumber;
             }
             SoundManager.I.PlaySFX(SoundManager.SFXType.GameOver, 1.0f);
+            SoundManager.I.StopMusic();
+            Camera gameCam = CameraManager.I.GetCamera(CameraManager.CameraInstance.ScreenCamera);
+            gameCam.QueueMovement(new DiminishCameraShake(5.5f, 5.0f, 25.0f));
         }
 
         public int GetHealth()

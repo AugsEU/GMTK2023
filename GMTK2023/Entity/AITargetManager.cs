@@ -3,7 +3,7 @@
     internal class AITargetManager : Singleton<AITargetManager>
     {
         const int MAX_TRIES = 100;
-        static Rectangle TARGET_AREA = new Rectangle(52, 150, 850, 290);
+        static Rectangle TARGET_AREA = new Rectangle(50, 160, 850, 290);
 
         List<Vector2> mCurrentTargets;
 

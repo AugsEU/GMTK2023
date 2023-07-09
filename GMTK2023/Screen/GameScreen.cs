@@ -7,7 +7,7 @@ namespace GMTK2023
     /// </summary>
     internal class GameScreen : Screen
     {
-        public static Rectangle PLAYABLE_AREA = new Rectangle(0, 88, 960, 417);
+        public static Rectangle PLAYABLE_AREA = new Rectangle(0, 135, 960, 370);
         public const double READY_TIME = 1500.0;
         public const double GO_TIME = 500.0;
         const double WIN_TIME = 1500.0;
@@ -83,7 +83,7 @@ namespace GMTK2023
             RandomManager.I.GetWorld().ChugNumber(DateTime.Now.Millisecond);
 
             AITargetManager.I.Init();
-            Vector2 playerSpawn = new Vector2(100.0f, 100.0f);
+            Vector2 playerSpawn = new Vector2(100.0f, 400.0f);
             mPlayer = new Player(playerSpawn, 0.0f);
 
             EntityManager.I.RegisterEntity(mPlayer);
