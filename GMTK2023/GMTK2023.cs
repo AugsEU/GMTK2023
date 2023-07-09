@@ -175,11 +175,6 @@ namespace GMTK2023
             {
                 ToggleFullscreen();
             }
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Escape))
-            {
-                Exit();
-            }
         }
 
 

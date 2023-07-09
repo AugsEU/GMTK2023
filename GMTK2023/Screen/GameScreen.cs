@@ -28,6 +28,8 @@ namespace GMTK2023
         PercentageTimer mWinTimer;
         PercentageTimer mLossTimer;
 
+        bool mIsPaused = false;
+
         #endregion rMembers
 
 
@@ -109,6 +111,16 @@ namespace GMTK2023
 
         public override void Update(GameTime gameTime)
         {
+            if(InputManager.I.KeyPressed(GameKeys.Pause))
+            {
+                mIsPaused = !mIsPaused;
+            }
+
+            if(mIsPaused)
+            {
+                return;
+            }
+
             if(mLossTimer.IsPlaying() || mWinTimer.IsPlaying())
             {
                 if (mLossTimer.GetPercentageF() >= 1.0f)
@@ -190,35 +202,42 @@ namespace GMTK2023
         public void DrawUI(DrawInfo info)
         {
             SpriteFont font = FontManager.I.GetFont("Pixica-24");
+            Vector2 centre = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) * 0.5f;
 
-            if (mReadyGoTimer.GetElapsedMs() < READY_TIME + GO_TIME)
+            if (mIsPaused)
             {
-                DrawReadyGoText(info);
+                MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
+                MonoDraw.DrawShadowStringCentred(info, font, centre, Color.White, "Paused", DrawLayer.Text);
             }
+            else
+            {
+                if (mReadyGoTimer.GetElapsedMs() < READY_TIME + GO_TIME)
+                {
+                    DrawReadyGoText(info);
+                }
 
-            if(mWinTimer.IsPlaying())
-            {
-                Vector2 centre = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) * 0.5f;
-                float flash = mWinTimer.GetPercentageF() % 0.5f;
-                Color textColor = Color.White;
-                if(flash > 0.25f)
+                if (mWinTimer.IsPlaying())
                 {
-                    textColor = Color.Yellow;
+                    float flash = mWinTimer.GetPercentageF() % 0.5f;
+                    Color textColor = Color.White;
+                    if (flash > 0.25f)
+                    {
+                        textColor = Color.Yellow;
+                    }
+                    MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
+                    MonoDraw.DrawShadowStringCentred(info, font, centre, textColor, "Round Won", DrawLayer.Text);
                 }
-                MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
-                MonoDraw.DrawShadowStringCentred(info, font, centre, textColor, "Round Won", DrawLayer.Text);
-            }
-            else if (mLossTimer.IsPlaying())
-            {
-                Vector2 centre = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) * 0.5f;
-                float flash = mLossTimer.GetPercentageF() % 0.5f;
-                Color textColor = Color.Orange;
-                if (flash > 0.25f)
+                else if (mLossTimer.IsPlaying())
                 {
-                    textColor = Color.Red;
+                    float flash = mLossTimer.GetPercentageF() % 0.5f;
+                    Color textColor = Color.Orange;
+                    if (flash > 0.25f)
+                    {
+                        textColor = Color.Red;
+                    }
+                    MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
+                    MonoDraw.DrawShadowStringCentred(info, font, centre, textColor, "Round Lost", DrawLayer.Text);
                 }
-                MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
-                MonoDraw.DrawShadowStringCentred(info, font, centre, textColor, "Round Lost", DrawLayer.Text);
             }
 
             DrawHealthBar(info, new Vector2(44.0f, 20.0f));
