@@ -61,13 +61,18 @@
             mDirectionTextures = new Animator[8];
             mDirectionTextures[(int)EightDirection.Up]          = MonoData.I.LoadAnimator("Player/PlayerUp");
             mDirectionTextures[(int)EightDirection.UpLeft]      = MonoData.I.LoadAnimator("Player/PlayerUpLeft");
-            mDirectionTextures[(int)EightDirection.Left]        = MonoData.I.LoadAnimator("Player/PlayerLeft");
+            mDirectionTextures[(int)EightDirection.Left]        = new Animator(Animator.PlayType.Repeat, ("Player/PlayerLeft", 0.1f), ("Player/PlayerLeftTwo", 0.1f));
             mDirectionTextures[(int)EightDirection.DownLeft]    = MonoData.I.LoadAnimator("Player/PlayerDownLeft");
             mDirectionTextures[(int)EightDirection.Down]        = MonoData.I.LoadAnimator("Player/PlayerDown");
             mDirectionTextures[(int)EightDirection.DownRight]   = MonoData.I.LoadAnimator("Player/PlayerDownRight");
-            mDirectionTextures[(int)EightDirection.Right]       = MonoData.I.LoadAnimator("Player/PlayerRight");
+            mDirectionTextures[(int)EightDirection.Right]       = new Animator(Animator.PlayType.Repeat, ("Player/PlayerRight", 0.1f), ("Player/PlayerRightTwo", 0.1f));
             mDirectionTextures[(int)EightDirection.UpRight]     = MonoData.I.LoadAnimator("Player/PlayerUpRight");
             mTexture = MonoData.I.MonoGameLoad<Texture2D>("Player/PlayerUp");
+
+            foreach(Animator anim in mDirectionTextures)
+            {
+                anim.Play();
+            }
         }
 
         #endregion rInit

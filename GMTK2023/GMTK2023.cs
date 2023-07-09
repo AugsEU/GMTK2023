@@ -72,7 +72,7 @@ namespace GMTK2023
             _graphics.ApplyChanges();
 
             Window.AllowUserResizing = true;
-            Window.Title = "GMTK 2023";
+            Window.Title = "Death Ride Reversal";
 
 
 

@@ -46,6 +46,7 @@
         bool mIsDead = false;
 
         bool mBeingGrappled = false;
+        bool mIsUzi = false;
 
         Texture2D mPentagram;
 
@@ -73,30 +74,50 @@
             mDirectShotTimer.Start();
 
             mDeadTimer = new PercentageTimer(DEATH_FLASH_TIME);
+
+            if(RunManager.I.GetRounds() > 3)
+            {
+                mIsUzi = RandomManager.I.GetWorld().PercentChance(30.0f);
+            }
         }
 
         public override void LoadContent()
         {
             mTeamSkins = new Animator[2][];
             mTeamSkins[(int)AITeam.Ally] = new Animator[8];
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Up]          = MonoData.I.LoadAnimator("Enemies/AllyUp");
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.UpLeft]      = MonoData.I.LoadAnimator("Enemies/AllyUpLeft");
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Left]        = MonoData.I.LoadAnimator("Enemies/AllyLeft");
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.DownLeft]    = MonoData.I.LoadAnimator("Enemies/AllyDownLeft");
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Down]        = MonoData.I.LoadAnimator("Enemies/AllyDown");
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.DownRight]   = MonoData.I.LoadAnimator("Enemies/AllyDownRight");
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Right]       = MonoData.I.LoadAnimator("Enemies/AllyRight");
-            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.UpRight]     = MonoData.I.LoadAnimator("Enemies/AllyUpRight");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Up] = MonoData.I.LoadAnimator("Enemies/AllyUp");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.UpLeft] = MonoData.I.LoadAnimator("Enemies/AllyUpLeft");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Left] = MonoData.I.LoadAnimator("Enemies/AllyLeft");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.DownLeft] = MonoData.I.LoadAnimator("Enemies/AllyDownLeft");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Down] = MonoData.I.LoadAnimator("Enemies/AllyDown");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.DownRight] = MonoData.I.LoadAnimator("Enemies/AllyDownRight");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.Right] = MonoData.I.LoadAnimator("Enemies/AllyRight");
+            mTeamSkins[(int)AITeam.Ally][(int)EightDirection.UpRight] = MonoData.I.LoadAnimator("Enemies/AllyUpRight");
 
-            mTeamSkins[(int)AITeam.Enemy] = new Animator[8];
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Up]          = MonoData.I.LoadAnimator("Enemies/EnemyUp");
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.UpLeft]      = MonoData.I.LoadAnimator("Enemies/EnemyUpLeft");
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Left]        = MonoData.I.LoadAnimator("Enemies/EnemyLeft");
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.DownLeft]    = MonoData.I.LoadAnimator("Enemies/EnemyDownLeft");
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Down]        = MonoData.I.LoadAnimator("Enemies/EnemyDown");
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.DownRight]   = MonoData.I.LoadAnimator("Enemies/EnemyDownRight");
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Right]       = MonoData.I.LoadAnimator("Enemies/EnemyRight");
-            mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.UpRight]     = MonoData.I.LoadAnimator("Enemies/EnemyUpRight");
+            if (mIsUzi)
+            {
+                mTeamSkins[(int)AITeam.Enemy] = new Animator[8];
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Up] = MonoData.I.LoadAnimator("Enemies/EnemyUziUp");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.UpLeft] = MonoData.I.LoadAnimator("Enemies/EnemyUziUpLeft");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Left] = MonoData.I.LoadAnimator("Enemies/EnemyUziLeft");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.DownLeft] = MonoData.I.LoadAnimator("Enemies/EnemyUziDownLeft");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Down] = MonoData.I.LoadAnimator("Enemies/EnemyUziDown");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.DownRight] = MonoData.I.LoadAnimator("Enemies/EnemyUziDownRight");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Right] = MonoData.I.LoadAnimator("Enemies/EnemyUziRight");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.UpRight] = MonoData.I.LoadAnimator("Enemies/EnemyUziUpRight");
+            }
+            else
+            {
+                mTeamSkins[(int)AITeam.Enemy] = new Animator[8];
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Up] = MonoData.I.LoadAnimator("Enemies/EnemyUp");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.UpLeft] = MonoData.I.LoadAnimator("Enemies/EnemyUpLeft");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Left] = MonoData.I.LoadAnimator("Enemies/EnemyLeft");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.DownLeft] = MonoData.I.LoadAnimator("Enemies/EnemyDownLeft");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Down] = MonoData.I.LoadAnimator("Enemies/EnemyDown");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.DownRight] = MonoData.I.LoadAnimator("Enemies/EnemyDownRight");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.Right] = MonoData.I.LoadAnimator("Enemies/EnemyRight");
+                mTeamSkins[(int)AITeam.Enemy][(int)EightDirection.UpRight] = MonoData.I.LoadAnimator("Enemies/EnemyUpRight");
+            }
 
             mTexture = MonoData.I.MonoGameLoad<Texture2D>("Enemies/AllyUp");
 
@@ -143,7 +164,15 @@
             {
                 ShootBullet();
                 mShootBulletTimer.Reset();
-                mShootDuration = RandomManager.I.GetWorld().GetFloatRange(1500.0f, 5000.0f);
+
+                if(mIsUzi)
+                {
+                    mShootDuration = RandomManager.I.GetWorld().GetFloatRange(500.0f, 3000.0f);
+                }
+                else
+                {
+                    mShootDuration = RandomManager.I.GetWorld().GetFloatRange(1500.0f, 5000.0f);
+                }
             }
 
             if (mDirectShotTimer.GetPercentageF() >= 1.0f && CanTakeDirectShot() && mCurrentTeam == AITeam.Enemy)
