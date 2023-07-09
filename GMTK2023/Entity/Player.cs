@@ -192,6 +192,10 @@
             mGrappleInAction = true;
             mGrappleLength = 0.0f;
             mGrappleDir = (InputManager.I.GetMouseWorldPos() - GetCentrePos());
+            if(mGrappledEntity is not null)
+            {
+                mGrappledEntity.SetBeingGrappled(false);
+            }
             mGrappledEntity = null;
             mRadialAngleSpeed = 0.0f;
             mTotalRadialAngleTravelled = 0.0f;
@@ -200,6 +204,10 @@
         void EndGrapple()
         {
             mGrappleInAction = false;
+            if (mGrappledEntity is not null)
+            {
+                mGrappledEntity.SetBeingGrappled(false);
+            }
             mGrappledEntity = null;
             mRadialAngleSpeed = 0.0f;
             mTotalRadialAngleTravelled = 0.0f;
@@ -235,6 +243,7 @@
                     if(distanceToGrappleHead < GRAPPLE_LOCK_DISTANCE)
                     {
                         mGrappledEntity = nearestToGrappleHead;
+                        mGrappledEntity.SetBeingGrappled(true);
                     }
                 }
                 else if(mRadialAngleSpeed == 0.0f)

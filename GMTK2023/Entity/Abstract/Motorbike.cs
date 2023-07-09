@@ -11,7 +11,7 @@ namespace GMTK2023
         const float BOOST_SPEED = 10.0f;
 
         bool mAccelerating;
-        float mMaxSpeed;
+        protected float mMaxSpeed;
 
         protected Motorbike(Vector2 pos, float angle, float maxSpeed) : base(pos, angle, TURN_SPEED)
         {

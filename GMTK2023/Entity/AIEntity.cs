@@ -17,6 +17,9 @@
         const float MAX_SPEED = 20.0f;
         const float TARGET_REACHED_DIST = 40.0f;
         const double MIN_DIRECTION_CHANGE_TIME = 300.0;
+        const double DIRECT_SHOT_TIMEOUT = 1000.0;
+
+        const double DEATH_FLASH_TIME = 800.0;
 
         #endregion rConstants
 
@@ -37,7 +40,12 @@
         MonoTimer mShootBulletTimer;
         float mShootDuration;
 
+        PercentageTimer mDirectShotTimer;
+        PercentageTimer mDeadTimer;
+
         bool mIsDead = false;
+
+        bool mBeingGrappled = false;
 
         #endregion rMembers
 
@@ -58,6 +66,11 @@
             mShootBulletTimer = new MonoTimer();
             mShootBulletTimer.Start();
             mShootDuration = RandomManager.I.GetWorld().GetFloatRange(3500.0f, 12000.0f);
+
+            mDirectShotTimer = new PercentageTimer(DIRECT_SHOT_TIMEOUT + RandomManager.I.GetWorld().GetFloatRange(200.0f, 800.0f));
+            mDirectShotTimer.Start();
+
+            mDeadTimer = new PercentageTimer(DEATH_FLASH_TIME);
         }
 
         public override void LoadContent()
@@ -98,9 +111,23 @@
 
         public override void Update(GameTime gameTime)
         {
+            if(mDeadTimer.IsPlaying())
+            {
+                if(mDeadTimer.GetPercentageF() >= 1.0f)
+                {
+                    EntityManager.I.QueueDeleteEntity(this);
+                }
+                return;
+            }
+
             if(mCurrentTarget == Vector2.Zero)
             {
                 GetNewTarget();
+            }
+
+            if(mBeingGrappled)
+            {
+                mSpeed = Math.Max(0.0f, mMaxSpeed * 0.5f);
             }
 
             ConsiderStop();
@@ -115,7 +142,40 @@
                 mShootDuration = RandomManager.I.GetWorld().GetFloatRange(1500.0f, 5000.0f);
             }
 
+            if (mDirectShotTimer.GetPercentageF() >= 1.0f && CanTakeDirectShot() && mCurrentTeam == AITeam.Enemy)
+            {
+                ShootBullet();
+                mDirectShotTimer.Reset();
+                mShootBulletTimer.Reset();
+            }
+
             base.Update(gameTime);
+        }
+
+        bool CanTakeDirectShot()
+        {
+            List<Entity> playerList = EntityManager.I.GetAllOfType(typeof(Player));
+
+            if(playerList.Count == 0)
+            {
+                return false;
+            }
+
+            Player player = (Player)playerList[0];
+
+            Vector2 toPlayer = player.GetCentrePos() - mCentreOfMass;
+            float distToPlayer = toPlayer.Length();
+            Vector2 directShotPos = player.GetCentrePos() + Vector2.Normalize(player.GetVelocity()) * 50.25f;
+
+            float toPlayerAngle = MathF.Atan2(toPlayer.Y, toPlayer.X);
+            float angleDiff = MonoMath.GetAngleDiff(GetCurrentAngle(), toPlayerAngle);
+
+            if (Collision2D.BoxVsPoint(new Rect2f(GameScreen.PLAYABLE_AREA), directShotPos) && distToPlayer < 500.0f && angleDiff < MathF.PI * 0.25f)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         void GoToTarget(GameTime gameTime)
@@ -163,21 +223,40 @@
 
         void ShootBullet()
         {
+            if(mBeingGrappled)
+            {
+                return;
+            }
+
             EntityManager.I.QueueRegisterEntity(new Bullet(mPosition, GetCurrentDir(), GetTeam()));
         }
 
         public override void Kill()
         {
             mIsDead = true;
-
-            base.Kill();
+            mDeadTimer.Start();
         }
 
         #endregion rUpdate
 
+        #region rDraw
+
+        public override void Draw(DrawInfo info)
+        {
+            if (mDeadTimer.IsPlaying())
+            {
+                float flash = mDeadTimer.GetPercentageF() % 0.15f;
+                if(flash > 0.075f)
+                {
+                    return;
+                }
+            }
+
+            base.Draw(info);
+        }
 
 
-
+        #endregion rDraw
 
         #region rUtil
 
@@ -212,6 +291,11 @@
         public bool IsDead()
         {
             return mIsDead;
+        }
+
+        public void SetBeingGrappled(bool grap)
+        {
+            mBeingGrappled = grap;
         }
 
         #endregion rUtil
