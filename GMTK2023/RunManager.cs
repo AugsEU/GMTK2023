@@ -43,7 +43,7 @@
 
         public int GetNumberOfEnemies()
         {
-            return 2 * (int)MathF.Ceiling(MathF.Sqrt(mRoundNumber + 0.25f));
+            return 2 * (int)MathF.Ceiling(MathF.Sqrt(mRoundNumber + 0.25f)) + mRoundNumber;
         }
 
         public void UseHealthPack()
