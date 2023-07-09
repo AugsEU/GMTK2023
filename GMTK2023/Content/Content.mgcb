@@ -550,6 +550,18 @@
 /processorParam:TextureFormat=Color
 /build:Player/PlayerLeft.png
 
+#begin Player/PlayerLeftTwo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/PlayerLeftTwo.png
+
 #begin Player/PlayerRight.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -561,6 +573,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player/PlayerRight.png
+
+#begin Player/PlayerRightTwo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/PlayerRightTwo.png
 
 #begin Player/PlayerUp.png
 /importer:TextureImporter
