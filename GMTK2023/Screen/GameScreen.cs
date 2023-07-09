@@ -37,6 +37,7 @@ namespace GMTK2023
 
         public GameScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
+            FXManager.I.Init(SCREEN_WIDTH, SCREEN_HEIGHT);
             mReadyGoTimer = new MonoTimer();
             mWinTimer = new PercentageTimer(WIN_TIME);
             mLossTimer = new PercentageTimer(LOSS_TIME);
@@ -58,6 +59,7 @@ namespace GMTK2023
 
         public override void OnActivate()
         {
+            FXManager.I.Clear();
             mReadyGoTimer.FullReset();
             mReadyGoTimer.Start();
 
