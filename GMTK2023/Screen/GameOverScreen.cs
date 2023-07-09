@@ -20,7 +20,7 @@ namespace GMTK2023
 
         public override RenderTarget2D DrawToRenderTarget(DrawInfo info)
         {
-            SpriteFont pixelFont = FontManager.I.GetFont("Pixica-24");
+            SpriteFont pixelFont = FontManager.I.GetFont("Scream-24");
 
             Vector2 centre = new Vector2(mScreenTarget.Width / 2, mScreenTarget.Height / 2);
 

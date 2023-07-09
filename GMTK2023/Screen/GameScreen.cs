@@ -226,7 +226,7 @@ namespace GMTK2023
 
         public void DrawUI(DrawInfo info)
         {
-            SpriteFont font = FontManager.I.GetFont("Pixica-24");
+            SpriteFont font = FontManager.I.GetFont("Scream-36");
             Vector2 centre = new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT) * 0.5f;
 
             if (mIsPaused)
@@ -297,7 +297,7 @@ namespace GMTK2023
         public void DrawReadyGoText(DrawInfo info)
         {
 
-            SpriteFont font = FontManager.I.GetFont("Pixica-24");
+            SpriteFont font = FontManager.I.GetFont("Scream-36");
             double time = mReadyGoTimer.GetElapsedMs();
             string text = "Ready?";
             Vector2 pos = new Vector2(SCREEN_WIDTH / 2.0f, 0.0f);
@@ -314,9 +314,10 @@ namespace GMTK2023
                 MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
             }
 
-            MonoDraw.DrawShadowStringCentred(info, font, pos, Color.White, text, DrawLayer.Text);
-            pos.Y -= 25.0f;
-            MonoDraw.DrawShadowStringCentred(info, font, pos, Color.White, "Round: " + (RunManager.I.GetRounds() + 1), DrawLayer.Text);
+            pos.Y += 25.0f;
+            MonoDraw.DrawShadowStringCentred(info, font, pos, Color.Wheat, text, DrawLayer.Text);
+            pos.Y -= 75.0f;
+            MonoDraw.DrawShadowStringCentred(info, font, pos, Color.Wheat, "Round: " + (RunManager.I.GetRounds() + 1), DrawLayer.Text);
         }
 
         #endregion rDraw

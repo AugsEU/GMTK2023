@@ -69,11 +69,25 @@
                 tex = mPressedTexture;
             }
 
-            MonoDraw.DrawTextureDepth(info, tex, mPosition, DrawLayer.Text);
+            //MonoDraw.DrawTextureDepth(info, tex, mPosition, DrawLayer.Text);
 
-            SpriteFont font = FontManager.I.GetFont("Pixica-24");
+            SpriteFont font = FontManager.I.GetFont("Scream-24");
             Vector2 strPos = new Vector2(mBackTexture.Width, mBackTexture.Height) * 0.5f + mPosition;
-            MonoDraw.DrawShadowStringCentred(info, font, strPos, Color.AliceBlue, mText, DrawLayer.Text);
+            MonoDraw.DrawStringCentred(info, font, strPos + new Vector2(2.0f, 2.0f), new Color(63, 14, 0), mText, DrawLayer.Text);
+
+            if (mState == ButtonState.Hover)
+            {
+                strPos.Y -= 2.0f;
+            }
+            else if(mState == ButtonState.Pressed)
+            {
+                strPos.Y -= 1.0f;
+            }
+
+
+
+            MonoDraw.DrawStringCentred(info, font, strPos, Color.Wheat, mText, DrawLayer.Text);
+
         }
 
         protected abstract void DoAction();
