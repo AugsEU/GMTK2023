@@ -17,6 +17,7 @@ namespace GMTK2023
 
         // Textures
         Texture2D mBG;
+        Texture2D mSkyline;
         Texture2D mHealthBarBG;
         Texture2D mHealthBarSegStart;
         Texture2D mHealthBarSegMid;
@@ -47,6 +48,7 @@ namespace GMTK2023
         public override void LoadContent()
         {
             mBG = MonoData.I.MonoGameLoad<Texture2D>("Backgrounds/GameScreen");
+            mSkyline = MonoData.I.MonoGameLoad<Texture2D>("Backgrounds/Skyline");
 
             mHealthBarBG = MonoData.I.MonoGameLoad<Texture2D>("UI/HealthBar");
             mHealthBarSegStart = MonoData.I.MonoGameLoad<Texture2D>("UI/HealthBarSegStart");
@@ -193,7 +195,23 @@ namespace GMTK2023
 
             StartScreenSpriteBatch(info);
 
-            MonoDraw.DrawTextureDepth(info, mBG, Vector2.Zero, DrawLayer.Background);
+            float scrollAmount = -mPlayer.GetCentrePos().X / 5.0f;
+            float scrollAmountSky = -mPlayer.GetCentrePos().X / 50.0f;
+
+            Vector2 startBG = new Vector2(scrollAmount - mBG.Width, 0.0f);
+            Vector2 startSky = new Vector2(scrollAmountSky - mSkyline.Width, 0.0f);
+
+            for (int i = 0; i < 3; i++)
+            {
+                MonoDraw.DrawTextureDepth(info, mBG, startBG, DrawLayer.Background);
+                MonoDraw.DrawTextureDepth(info, mSkyline, startSky, DrawLayer.BackgroundElement);
+                startBG.X += mBG.Width;
+                startSky.X += mSkyline.Width;
+            }
+
+            
+
+
             EntityManager.I.Draw(info);
 
             DrawUI(info);

@@ -256,7 +256,7 @@
                 }
             }
 
-            if(mBeingGrappled && mCurrentTeam == AITeam.Enemy)
+            if(mBeingGrappled)
             {
                 MonoDraw.DrawTextureDepth(info, mPentagram, mCentreOfMass - new Vector2(mPentagram.Width, mPentagram.Height) * 0.5f, DrawLayer.SubEntity);
             }
