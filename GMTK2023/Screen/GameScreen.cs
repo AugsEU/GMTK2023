@@ -117,7 +117,7 @@ namespace GMTK2023
                 }
                 else if(mWinTimer.GetPercentageF() >= 1.0f)
                 {
-                    ScreenManager.I.ActivateScreen(ScreenType.NextRound);
+                    ScreenManager.I.ActivateScreen(ScreenType.Game);
                 }
 
                 return;
@@ -269,6 +269,8 @@ namespace GMTK2023
             }
 
             MonoDraw.DrawShadowStringCentred(info, font, pos, Color.White, text, DrawLayer.Text);
+            pos.Y -= 25.0f;
+            MonoDraw.DrawShadowStringCentred(info, font, pos, Color.White, "Round: " + (RunManager.I.GetRounds() + 1), DrawLayer.Text);
         }
 
         #endregion rDraw

@@ -1,13 +1,20 @@
-﻿namespace GMTK2023
+﻿using GMTK2023.UI;
+
+namespace GMTK2023
 {
     internal class GameOverScreen : Screen
     {
+        Texture2D mBG;
+        ScreenTransitionButton mTutorialBtn;
+
         public GameOverScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
+            mTutorialBtn = new ScreenTransitionButton(new Vector2(770.0f, 430.0f), "Back", ScreenType.Title);
         }
 
         public override void LoadContent()
         {
+            mBG = MonoData.I.MonoGameLoad<Texture2D>("Backgrounds/GameOver");
             base.LoadContent();
         }
 
@@ -23,7 +30,13 @@
 
             StartScreenSpriteBatch(info);
 
-            MonoDraw.DrawStringCentred(info, pixelFont, centre, Color.White, "GAME OVER");
+            MonoDraw.DrawTexture(info, mBG, Vector2.Zero);
+            mTutorialBtn.Draw(info);
+
+            Color textCol = new Color(255, 219, 162);
+            MonoDraw.DrawShadowStringCentred(info, pixelFont, centre, textCol, "Rounds: " + RunManager.I.GetRounds());
+            centre.Y += 50.0f;
+            MonoDraw.DrawShadowStringCentred(info, pixelFont, centre, textCol, "High Score: " + RunManager.I.GetHighScore());
 
             EndScreenSpriteBatch(info);
 
@@ -32,10 +45,7 @@
 
         public override void Update(GameTime gameTime)
         {
-            if (InputManager.I.KeyPressed(GameKeys.Confirm))
-            {
-                ScreenManager.I.ActivateScreen(ScreenType.Title);
-            }
+            mTutorialBtn.Update(gameTime);
         }
     }
 }

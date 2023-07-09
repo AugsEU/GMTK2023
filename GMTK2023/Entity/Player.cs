@@ -11,7 +11,7 @@
         const float GRAPPLE_RADIAL_SPIN_SPEED = MAX_SPEED + 10.0f;
         const float GRAPPLE_RADIAL_SPIN_START_ANGLE = 0.9f;
         const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 25.0f;
-        const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.85f;
+        const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.75f;
 
         public const int MAX_HEALTH = 7;
 

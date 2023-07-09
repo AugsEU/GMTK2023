@@ -59,5 +59,15 @@
                 mHealthPacksRemaining--;
             }
         }
+
+        public int GetRounds()
+        {
+            return mRoundNumber;
+        }
+
+        public int GetHighScore()
+        {
+            return mHighScore;
+        }
     }
 }
