@@ -155,7 +155,7 @@ namespace GMTK2023
         void WinRound()
         {
             mWinTimer.Start();
-            RunManager.I.EndRound();
+            RunManager.I.EndRound(mPlayer);
         }
 
         void LoseGame()

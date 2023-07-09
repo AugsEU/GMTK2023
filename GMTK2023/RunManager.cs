@@ -25,14 +25,19 @@
         }
 
 
-        public void EndRound()
+        public void EndRound(Player player)
         {
+            mCurrentHealth = player.GetHealth();
             mRoundNumber++;
         }
 
         public void EndRun()
         {
             mRunStarted = false;
+            if(mRoundNumber > mHighScore)
+            {
+                mHighScore = mRoundNumber;
+            }
         }
 
         public int GetHealth()
