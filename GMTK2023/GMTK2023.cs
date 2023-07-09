@@ -92,6 +92,7 @@ namespace GMTK2023
             FontManager.I.LoadAllFonts();
             InputManager.I.Init();
             CameraManager.I.Init();
+            SoundManager.I.LoadContent(Content);
 
             ScreenManager.I.LoadAllScreens(_graphics);
             ScreenManager.I.ActivateScreen(ScreenType.Title);

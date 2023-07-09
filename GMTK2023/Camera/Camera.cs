@@ -200,6 +200,7 @@ namespace GMTK2023
         /// </summary>
         public void QueueMovement(CameraMovement movement)
         {
+            mCameraMovements.Clear();
             mCameraMovements.Enqueue(movement);
         }
 

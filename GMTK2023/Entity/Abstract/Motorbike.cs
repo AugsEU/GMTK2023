@@ -30,7 +30,7 @@ namespace GMTK2023
 
             if(mAccelerating)
             {
-                mSpeed = Math.Clamp(mSpeed, MIN_SPEED, mMaxSpeed);
+                mSpeed = Math.Max(mSpeed, MIN_SPEED);
                 mSpeed += dt * ACELERATE;
             }
             else
@@ -42,7 +42,12 @@ namespace GMTK2023
                 }
             }
 
-            mSpeed = Math.Clamp(mSpeed, 0.0f, mMaxSpeed);
+            mSpeed = Math.Max(mSpeed, 0.0f);
+
+            if(mSpeed > mMaxSpeed)
+            {
+                mSpeed -= dt * 3.0f;
+            }
 
             base.Update(gameTime);
         }

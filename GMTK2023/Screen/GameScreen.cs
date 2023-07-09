@@ -7,7 +7,7 @@ namespace GMTK2023
     /// </summary>
     internal class GameScreen : Screen
     {
-        public static Rectangle PLAYABLE_AREA = new Rectangle(0, 88, 960, 417);
+        public static Rectangle PLAYABLE_AREA = new Rectangle(0, 135, 960, 370);
         public const double READY_TIME = 1500.0;
         public const double GO_TIME = 500.0;
         const double WIN_TIME = 1500.0;
@@ -37,6 +37,7 @@ namespace GMTK2023
 
         public GameScreen(GraphicsDeviceManager graphics) : base(graphics)
         {
+            FXManager.I.Init(SCREEN_WIDTH, SCREEN_HEIGHT);
             mReadyGoTimer = new MonoTimer();
             mWinTimer = new PercentageTimer(WIN_TIME);
             mLossTimer = new PercentageTimer(LOSS_TIME);
@@ -58,12 +59,14 @@ namespace GMTK2023
 
         public override void OnActivate()
         {
+            FXManager.I.Clear();
             mReadyGoTimer.FullReset();
             mReadyGoTimer.Start();
 
             if(RunManager.I.HasStarted() == false)
             {
                 RunManager.I.StartRun();
+                SoundManager.I.PlayMusic(SoundManager.MusicType.MainGame, 0.55f);
             }
 
             EntityManager.I.ClearEntities();
@@ -82,7 +85,7 @@ namespace GMTK2023
             RandomManager.I.GetWorld().ChugNumber(DateTime.Now.Millisecond);
 
             AITargetManager.I.Init();
-            Vector2 playerSpawn = new Vector2(100.0f, 100.0f);
+            Vector2 playerSpawn = new Vector2(100.0f, 400.0f);
             mPlayer = new Player(playerSpawn, 0.0f);
 
             EntityManager.I.RegisterEntity(mPlayer);
@@ -135,7 +138,7 @@ namespace GMTK2023
                 return;
             }
 
-            if(mReadyGoTimer.GetElapsedMs() > READY_TIME + GO_TIME)
+            if(mReadyGoTimer.GetElapsedMs() > GetReadyTime())
             {
                 EntityManager.I.Update(gameTime);
             }
@@ -211,7 +214,7 @@ namespace GMTK2023
             }
             else
             {
-                if (mReadyGoTimer.GetElapsedMs() < READY_TIME + GO_TIME)
+                if (mReadyGoTimer.GetElapsedMs() < GetReadyTime() + GO_TIME)
                 {
                     DrawReadyGoText(info);
                 }
@@ -271,20 +274,22 @@ namespace GMTK2023
 
         public void DrawReadyGoText(DrawInfo info)
         {
+
             SpriteFont font = FontManager.I.GetFont("Pixica-24");
             double time = mReadyGoTimer.GetElapsedMs();
             string text = "Ready?";
             Vector2 pos = new Vector2(SCREEN_WIDTH / 2.0f, 0.0f);
 
-            if(time > READY_TIME)
+            if(time > GetReadyTime())
             {
                 text = "GO!";
                 pos.Y = SCREEN_HEIGHT / 2.0f;
             }
             else
             {
-                float t = MathF.Min((float)(time / READY_TIME) * 2.0f, 1.0f);
+                float t = MathF.Min((float)(time / GetReadyTime()) * 2.0f, 1.0f);
                 pos.Y = t * SCREEN_HEIGHT / 2.0f;
+                MonoDraw.DrawRectDepth(info, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), new Color(10, 10, 10, 100), DrawLayer.Text);
             }
 
             MonoDraw.DrawShadowStringCentred(info, font, pos, Color.White, text, DrawLayer.Text);
@@ -295,6 +300,10 @@ namespace GMTK2023
         #endregion rDraw
 
 
+        double GetReadyTime()
+        {
+            return RunManager.I.GetRounds() == 0 ? 4000.0 : READY_TIME;
+        }
 
 
     }
