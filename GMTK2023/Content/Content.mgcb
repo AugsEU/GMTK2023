@@ -85,6 +85,18 @@
 /processorParam:TextureFormat=Color
 /build:Bullet/BulletEnemy.png
 
+#begin Effects/pent.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Effects/pent.png
+
 #begin Enemies/AllyDown.png
 /importer:TextureImporter
 /processor:TextureProcessor
