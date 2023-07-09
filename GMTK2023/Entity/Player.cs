@@ -15,7 +15,7 @@
 
         const float FIRE_DISTANCE = 10.0f;
 
-        public const int MAX_HEALTH = 7;
+        public const int MAX_HEALTH = 5;
 
         #endregion rConstants
 
@@ -33,6 +33,9 @@
         float mRadialAngle;
         float mTotalRadialAngleTravelled;
         Vector2 mLastFirePos = Vector2.Zero;
+
+        bool mOnFire = false;
+        int mFireCombo = 0;
 
 
         int mHealth;
@@ -100,18 +103,41 @@
 
                 if (mTotalRadialAngleTravelled > GRAPPLE_ANGLE_TO_CHANGE_TEAM)
                 {
+                    if(mGrappledEntity.GetTeam() == AITeam.Enemy)
+                    {
+                        mFireCombo++;
+                        if(mFireCombo > 1)
+                        {
+                            if(mFireCombo % 5 == 0)
+                            {
+                                AddHealth(1);
+                                FXManager.I.AddTextScroller(Color.Wheat, mCentreOfMass, "Combo: +1HP");
+                            }
+                            else
+                            {
+                                FXManager.I.AddTextScroller(Color.Wheat, mCentreOfMass, "Combo: " + mFireCombo);
+                            }
+                            
+                        }
+                    }
                     mGrappledEntity.SetTeam(AITeam.Ally);
                 }
             }
 
             if(mSpeed > mMaxSpeed + 3.0f)
             {
+                mOnFire = true;
                 Vector2 toLastFire = mCentreOfMass - mLastFirePos;
                 if(toLastFire.Length() > FIRE_DISTANCE)
                 {
                     FXManager.I.AddFlame(mCentreOfMass + new Vector2(0.0f, 6.0f), DrawLayer.SubEntity);
                     mLastFirePos = mCentreOfMass;
                 }
+            }
+            else
+            {
+                mOnFire = false;
+                mFireCombo = 0;
             }
         }
 
@@ -346,6 +372,7 @@
         public void AddHealth(int delta)
         {
             mHealth += delta;
+            mHealth = (int)Math.Min(mHealth, MAX_HEALTH);
             if(mHealth <= 0)
             {
                 Kill();

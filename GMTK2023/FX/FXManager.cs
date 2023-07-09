@@ -114,6 +114,21 @@
             mFXList.Add(new AnimationFX(pos, anim, drawLayer));
         }
 
+        /// <summary>
+        /// Add small piece of text that scrolls up.
+        /// </summary>
+        /// <param name="font">Font to draw text in</param>
+        /// <param name="colour">Colour of text</param>
+        /// <param name="pos">Starting position</param>
+        /// <param name="text">String to display</param>
+        /// <param name="upSpeed">Speed at which text goes up</param>
+        /// <param name="maxHeight">Maximum height difference reached by text</param>
+        /// <param name="time">Time that text shows up</param>
+        public void AddTextScroller(Color colour, Vector2 pos, string text, float upSpeed = 4.1f, float maxHeight = 10.0f, float time = 20.0f)
+        {
+            SpriteFont font = FontManager.I.GetFont("Pixica-24");
+            mFXList.Add(new ScrollerTextFX(font, colour, pos, text, upSpeed, maxHeight, time));
+        }
 
 
         /// <summary>
