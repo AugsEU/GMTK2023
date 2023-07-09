@@ -124,6 +124,8 @@ namespace GMTK2023
                 return;
             }
 
+            FXManager.I.Update(gameTime);
+
             if(mLossTimer.IsPlaying() || mWinTimer.IsPlaying())
             {
                 if (mLossTimer.GetPercentageF() >= 1.0f)
@@ -195,6 +197,8 @@ namespace GMTK2023
             EntityManager.I.Draw(info);
 
             DrawUI(info);
+
+            FXManager.I.Draw(info);
 
             EndScreenSpriteBatch(info);
 

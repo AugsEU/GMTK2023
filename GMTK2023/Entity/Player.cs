@@ -13,6 +13,8 @@
         const float GRAPPLE_RADIAL_SPIN_MIN_RADIUS = 25.0f;
         const float GRAPPLE_ANGLE_TO_CHANGE_TEAM = MathF.PI * 1.75f;
 
+        const float FIRE_DISTANCE = 10.0f;
+
         public const int MAX_HEALTH = 7;
 
         #endregion rConstants
@@ -30,6 +32,7 @@
         float mRadialAngleSpeed;
         float mRadialAngle;
         float mTotalRadialAngleTravelled;
+        Vector2 mLastFirePos = Vector2.Zero;
 
 
         int mHealth;
@@ -98,6 +101,16 @@
                 if (mTotalRadialAngleTravelled > GRAPPLE_ANGLE_TO_CHANGE_TEAM)
                 {
                     mGrappledEntity.SetTeam(AITeam.Ally);
+                }
+            }
+
+            if(mSpeed > mMaxSpeed + 3.0f)
+            {
+                Vector2 toLastFire = mCentreOfMass - mLastFirePos;
+                if(toLastFire.Length() > FIRE_DISTANCE)
+                {
+                    FXManager.I.AddFlame(mCentreOfMass + new Vector2(0.0f, 6.0f), DrawLayer.SubEntity);
+                    mLastFirePos = mCentreOfMass;
                 }
             }
         }

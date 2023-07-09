@@ -94,12 +94,32 @@
 			mFXList.Add(new AnimationFX(pos, anim, drawLayer));
 		}
 
+        /// <summary>
+        /// Add animtion
+        /// </summary>
+        public void AddFlame(Vector2 pos, DrawLayer drawLayer)
+        {
+			pos.X += 4.0f;
+			pos.Y += 4.0f;
+			float ft = 0.1f;
+			Animator anim = new Animator(Animator.PlayType.OneShot
+				, ("Fire/Flame1", ft)
+				, ("Fire/Flame2", ft)
+				, ("Fire/Flame3", ft)
+				, ("Fire/Flame4", ft)
+				, ("Fire/Flame5", ft)
+				, ("Fire/Flame6", ft)
+				, ("Fire/Flame7", ft)
+				, ("Fire/Flame8", ft));
+            mFXList.Add(new AnimationFX(pos, anim, drawLayer));
+        }
 
 
-		/// <summary>
-		/// Clear all effects
-		/// </summary>
-		public void Clear()
+
+        /// <summary>
+        /// Clear all effects
+        /// </summary>
+        public void Clear()
 		{
 			mFXList.Clear();
 		}
