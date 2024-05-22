@@ -1,94 +1,94 @@
 ﻿namespace GMTK2023
 {
-    internal class CameraManager : Singleton<CameraManager>
-    {
-        #region rTypes
+	internal class CameraManager : Singleton<CameraManager>
+	{
+		#region rTypes
 
-        public enum CameraInstance
-        {
-            GameAreaCamera,
-            ScreenCamera,
-            GlobalCamera,
-            NumCameraInstances
-        }
+		public enum CameraInstance
+		{
+			GameAreaCamera,
+			ScreenCamera,
+			GlobalCamera,
+			NumCameraInstances
+		}
 
-        #endregion rTypes
-
-
-
-
-
-        #region rMembers
-
-        Camera[] mCameraList;
-
-        #endregion rMembers
+		#endregion rTypes
 
 
 
 
 
-        #region rInit
+		#region rMembers
 
-        /// <summary>
-        /// Init all cameras(called once per launch)
-        /// </summary>
-        public void Init()
-        {
-            int numInstances = (int)CameraInstance.NumCameraInstances;
-            mCameraList = new Camera[numInstances];
-            for (int i = 0; i < numInstances; i++)
-            {
-                mCameraList[i] = new Camera();
-            }
-        }
+		Camera[] mCameraList;
 
-        #endregion rInit
+		#endregion rMembers
 
 
 
-        #region rUpdate
-
-        /// <summary>
-        /// Update all the cameras
-        /// </summary>
-        public void UpdateAllCameras(GameTime gameTime)
-        {
-            foreach (Camera camera in mCameraList)
-            {
-                camera.Update(gameTime);
-            }
-        }
-
-        #endregion rUpdate
 
 
+		#region rInit
 
-        #region rUtil
+		/// <summary>
+		/// Init all cameras(called once per launch)
+		/// </summary>
+		public void Init()
+		{
+			int numInstances = (int)CameraInstance.NumCameraInstances;
+			mCameraList = new Camera[numInstances];
+			for (int i = 0; i < numInstances; i++)
+			{
+				mCameraList[i] = new Camera();
+			}
+		}
 
-        /// <summary>
-        /// Get a camera of type
-        /// </summary>
-        public Camera GetCamera(CameraInstance camera)
-        {
-            return mCameraList[(int)camera];
-        }
+		#endregion rInit
 
 
 
-        /// <summary>
-        /// Do any of our cameras want us to block the update?
-        /// </summary>
-        public bool BlockUpdateRequested()
-        {
-            foreach (Camera cam in mCameraList)
-            {
-                if (cam.ShouldBlockUpdate()) return true;
-            }
+		#region rUpdate
 
-            return false;
-        }
+		/// <summary>
+		/// Update all the cameras
+		/// </summary>
+		public void UpdateAllCameras(GameTime gameTime)
+		{
+			foreach (Camera camera in mCameraList)
+			{
+				camera.Update(gameTime);
+			}
+		}
 
-        #endregion rUtil
-    }
+		#endregion rUpdate
+
+
+
+		#region rUtil
+
+		/// <summary>
+		/// Get a camera of type
+		/// </summary>
+		public Camera GetCamera(CameraInstance camera)
+		{
+			return mCameraList[(int)camera];
+		}
+
+
+
+		/// <summary>
+		/// Do any of our cameras want us to block the update?
+		/// </summary>
+		public bool BlockUpdateRequested()
+		{
+			foreach (Camera cam in mCameraList)
+			{
+				if (cam.ShouldBlockUpdate()) return true;
+			}
+
+			return false;
+		}
+
+		#endregion rUtil
+	}
 }

@@ -1,41 +1,41 @@
 ﻿namespace GMTK2023
 {
-    abstract class CameraMovement
-    {
-        protected CameraSpec mCurrentSpec;
+	abstract class CameraMovement
+	{
+		protected CameraSpec mCurrentSpec;
 
-        public void StartMovement(CameraSpec startingSpec)
-        {
-            mCurrentSpec = startingSpec;
-            StartMovementInternal();
-        }
+		public void StartMovement(CameraSpec startingSpec)
+		{
+			mCurrentSpec = startingSpec;
+			StartMovementInternal();
+		}
 
-        abstract protected void StartMovementInternal();
+		abstract protected void StartMovementInternal();
 
-        abstract protected void EndMovementInternal(ref CameraSpec endSpec);
+		abstract protected void EndMovementInternal(ref CameraSpec endSpec);
 
-        public bool IsMovementOver(ref CameraSpec endSpec)
-        {
-            bool over = IsMovementOverInternal();
-            if (over)
-            {
-                EndMovementInternal(ref endSpec);
-            }
+		public bool IsMovementOver(ref CameraSpec endSpec)
+		{
+			bool over = IsMovementOverInternal();
+			if (over)
+			{
+				EndMovementInternal(ref endSpec);
+			}
 
-            return over;
-        }
+			return over;
+		}
 
-        abstract protected bool IsMovementOverInternal();
+		abstract protected bool IsMovementOverInternal();
 
-        public CameraSpec Update(GameTime gameTime)
-        {
-            UpdateInternal(gameTime);
-            return mCurrentSpec;
-        }
+		public CameraSpec Update(GameTime gameTime)
+		{
+			UpdateInternal(gameTime);
+			return mCurrentSpec;
+		}
 
-        protected abstract void UpdateInternal(GameTime gameTime);
+		protected abstract void UpdateInternal(GameTime gameTime);
 
-        public virtual bool MovementBlocksUpdate() { return false; }
+		public virtual bool MovementBlocksUpdate() { return false; }
 
-    }
+	}
 }
